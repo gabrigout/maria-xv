@@ -369,6 +369,9 @@ const CONFIG = {
 
   /** Abre o WhatsApp e mostra o link de reserva no formulário. */
   function enviarWhats(texto, form) {
+    if (form.dataset.enviando) return;                  // toque duplo: não abre duas abas
+    form.dataset.enviando = '1';
+    setTimeout(() => { delete form.dataset.enviando; }, 1800);
     const url = waUrl(texto);
     openExternal(url);
     toast(CONFIG.textos.avisos.abrindoWhats);
