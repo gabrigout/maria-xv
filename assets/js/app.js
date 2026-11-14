@@ -98,20 +98,26 @@ const CONFIG = {
   },
 
   /* ----- Manual do Convidado (um item por linha) -----
-     Um item pode ser só o texto ou { texto, cores: [...] } para mostrar amostras de cor. */
+     Cada item: { texto, icone, cores? }. icone: hanger, clock, usercheck, letter, bowtie.
+     "cores" mostra amostras (riscadas) das cores que os convidados não devem usar.        */
   manual: [
-    { texto: "Não utilize roupas nas cores azul e prata", cores: ["#1f3f91", "#c5cedb"] },
-    "Seja pontual e aproveite a festa conosco",
-    "Confirme sua presença, por favor",
-    "Convite individual e intransferível, ou seja, convidado não convida",
-    "Traje: passeio completo / esporte fino",
+    { texto: "Não utilize roupas nas cores azul e prata", icone: "hanger", cores: ["#1f3f91", "#c5cedb"] },
+    { texto: "Seja pontual e aproveite a festa conosco", icone: "clock" },
+    { texto: "Confirme sua presença, por favor", icone: "usercheck" },
+    { texto: "Convite individual e intransferível, ou seja, convidado não convida", icone: "letter" },
+    { texto: "Traje: passeio completo / esporte fino", icone: "bowtie" },
   ],
 
   /* ----- Textos da interface ----- */
   textos: {
     abrir: "Toque para abrir",
+    pular: "Pular",
     capaConvite: "Você está convidado",
     detalhesTitulo: "Detalhes da Celebração",
+    convite: {
+      chamada: "Convida você para celebrar meus 15 anos",
+      frase: "Uma noite especial para viver ao meu lado",
+    },
     rotuloData: "Data",
     rotuloHora: "Horário",
     rotuloLocal: "Local",
@@ -346,9 +352,19 @@ const CONFIG = {
     CONFIG.manual.forEach((item, i) => {
       const texto = typeof item === 'string' ? item : item.texto;
       const cores = typeof item === 'string' ? null : item.cores;
+      const icone = typeof item === 'string' ? null : item.icone;
       const li = document.createElement('li');
-      const n = document.createElement('span');
-      n.className = 'manual__n'; n.textContent = romano(i + 1); n.setAttribute('aria-hidden', 'true');
+      let n;
+      if (icone) {                                     // ícone de linha no lugar do número
+        const NS = 'http://www.w3.org/2000/svg';
+        n = document.createElementNS(NS, 'svg');
+        n.setAttribute('class', 'manual__ico'); n.setAttribute('aria-hidden', 'true');
+        const u = document.createElementNS(NS, 'use'); u.setAttribute('href', '#i-' + icone);
+        n.appendChild(u);
+      } else {
+        n = document.createElement('span');
+        n.className = 'manual__n'; n.textContent = romano(i + 1); n.setAttribute('aria-hidden', 'true');
+      }
       const t = document.createElement('span');
       t.className = 'manual__t'; t.textContent = texto;
       if (cores && cores.length) {                     // amostras (riscadas) das cores a evitar
@@ -665,7 +681,7 @@ const CONFIG = {
     const root = document.documentElement;
     let aberto = false;
 
-    const T = reduceMotion
+    const T0 = reduceMotion
       ? { sair: 450,  fim: 800 }
       : { sair: 2300, fim: 3150 };
 
@@ -689,15 +705,55 @@ const CONFIG = {
       }
     }
 
-    function abrir() {
+    /** Chuva de brilhos que sobe do envelope quando a aba abre (poucos pontos; menos ainda em celular fraco). */
+    function brilhos() {
+      if (reduceMotion) return;
+      const cv = $('#burst');
+      const ctx = cv.getContext && cv.getContext('2d');
+      if (!ctx) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = intro.clientWidth, h = intro.clientHeight;
+      cv.width = w * dpr; cv.height = h * dpr;
+      ctx.scale(dpr, dpr);
+      const r = $('#envelope').getBoundingClientRect();
+      const fraco = (navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 4) <= 2;
+      const cores = ['#ffffff', '#dfe5ee', '#9fb8f0'];
+      const ps = Array.from({ length: fraco ? 26 : 56 }, () => {
+        const a = -Math.PI / 2 + (Math.random() - 0.5) * 1.5, v = 2.2 + Math.random() * 4.2;
+        return { x: r.left + r.width * (0.25 + Math.random() * 0.5), y: r.top + r.height * 0.3, vx: Math.cos(a) * v, vy: Math.sin(a) * v,
+                 s: 1 + Math.random() * 2.2, vida: 0, max: 60 + Math.random() * 50, c: cores[Math.floor(Math.random() * 3)] };
+      });
+      setTimeout(() => {                               // começa quando a aba já está levantando
+        requestAnimationFrame(function passo() {
+          ctx.clearRect(0, 0, w, h);
+          let vivos = 0;
+          ps.forEach((p) => {
+            if (p.vida > p.max) return;
+            vivos++; p.vida++; p.vy += 0.05; p.x += p.vx; p.y += p.vy; p.vx *= 0.992;
+            ctx.globalAlpha = Math.max(0, 1 - p.vida / p.max);
+            ctx.fillStyle = p.c;
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 6.283); ctx.fill();
+          });
+          if (vivos) requestAnimationFrame(passo); else ctx.clearRect(0, 0, w, h);
+        });
+      }, 1000);
+    }
+
+    function abrir(rapido) {
       if (aberto) return;
       aberto = true;
+      const T = rapido ? { sair: 200, fim: 650 } : T0;   // "Pular": sem a animação longa
 
       Music.start();                                   // tem que ser aqui, dentro do toque
       if (navigator.vibrate) { try { navigator.vibrate(16); } catch (e) { /* ignora */ } }
 
-      quebrarLacre();
-      intro.classList.add('is-opening');
+      if (rapido) {
+        intro.classList.add('is-skipping');
+      } else {
+        quebrarLacre();
+        intro.classList.add('is-opening');
+        brilhos();
+      }
 
       setTimeout(() => {                               // dissolve o envelope e mostra os detalhes
         intro.classList.add('is-leaving');
@@ -716,7 +772,8 @@ const CONFIG = {
     }
 
     // O lacre é um <button> (acessível por teclado); tocar em qualquer parte do envelope também abre.
-    intro.addEventListener('click', abrir);
+    intro.addEventListener('click', () => abrir(false));
+    $('#skip').addEventListener('click', (e) => { e.stopPropagation(); abrir(true); });
   }
 
 
