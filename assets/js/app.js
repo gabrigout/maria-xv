@@ -101,7 +101,7 @@ const CONFIG = {
      Cada item: { texto, icone, cores? }. icone: hanger, clock, usercheck, letter, bowtie.
      "cores" mostra amostras (riscadas) das cores que os convidados não devem usar.        */
   manual: [
-    { texto: "Não utilize roupas nas cores azul e prata", icone: "hanger", cores: ["#1f3f91", "#c5cedb"] },
+    { texto: "Não utilize vestidos azuis", icone: "hanger", cores: ["#1f3f91"] },
     { texto: "Seja pontual e aproveite a festa conosco", icone: "clock" },
     { texto: "Confirme sua presença, por favor", icone: "usercheck" },
     { texto: "Convite individual e intransferível, ou seja, convidado não convida", icone: "letter" },
