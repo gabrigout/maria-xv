@@ -1,0 +1,10 @@
+# sistema / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# gerados localmente
+*.wav
+node_modules/
+*.log
