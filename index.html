@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>XV Anos · Maria Fernanda</title>
+
+  <!-- Mobile-first: viewport-fit=cover habilita as áreas seguras (notch) no iPhone -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050a1a">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Convite para os XV anos de Maria Fernanda · quinta-feira, 17 de dezembro de 2026, às 21h · Le Lys Maison, Belém/PA.">
+
+  <!--
+    PRÉ-VISUALIZAÇÃO DO LINK NO WHATSAPP
+    Depois de publicar o site, troque as duas URLs abaixo pelo endereço completo
+    (ex.: https://maria-xv.netlify.app/assets/img/preview.jpg). O WhatsApp só mostra
+    a imagem se o endereço for completo. Depois, publique de novo.
+  -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="XV Anos · Maria Fernanda">
+  <meta property="og:description" content="Você está convidado. Toque para abrir o convite.">
+  <meta property="og:image" content="assets/img/preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+  <!-- Fontes: única dependência externa (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Great+Vibes&amp;display=swap">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Marca que o JS está ativo (as animações de entrada só rodam com JS) -->
+  <script>document.documentElement.className += ' js is-locked';</script>
+  <noscript><style>#intro{display:none!important}#main{visibility:visible!important;opacity:1!important}html,body{overflow:auto!important;height:auto!important}</style></noscript>
+</head>
+
+<body>
+
+  <!-- =====================================================================
+       SPRITE SVG — ícones, ornamentos e o lacre. Reutilizados com <use>.
+       (Não usar display:none aqui: gradientes/padrões precisam renderizar.)
+       ===================================================================== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- Cera prateada: gradiente suave, sem brilho neon -->
+      <radialGradient id="g-wax" cx=".36" cy=".3" r=".9">
+        <stop offset="0" stop-color="#f4f6fa"/>
+        <stop offset=".42" stop-color="#cdd3de"/>
+        <stop offset=".78" stop-color="#a1aaba"/>
+        <stop offset="1" stop-color="#7b8598"/>
+      </radialGradient>
+      <linearGradient id="g-wax-in" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9aa3b3"/>
+        <stop offset="1" stop-color="#e3e7ee"/>
+      </linearGradient>
+      <!-- Trama fina do forro do envelope (estilo envelope de segurança) -->
+      <pattern id="p-lining" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <path d="M6 0V12M0 6H12" stroke="rgba(197,206,219,.075)" stroke-width="1" fill="none"/>
+      </pattern>
+    </defs>
+
+    <!-- LACRE DE CERA: contorno irregular (feito à mão), anel em baixo-relevo e "XV" -->
+    <symbol id="seal-art" viewBox="0 0 120 120">
+      <path transform="translate(2 3.5)" fill="#000" opacity=".3"
+        d="M110.9 62.3C111.9 67.4 113.0 72.9 111.7 77.3C110.5 81.7 106.8 85.8 103.2 88.9C99.7 91.9 93.9 92.5 90.6 95.5C87.3 98.5 87.3 104.1 83.6 107.0C79.8 109.9 72.9 112.3 68.2 113.0C63.5 113.6 59.5 112.6 55.2 111.0C50.9 109.5 47.0 105.8 42.4 103.5C37.7 101.2 31.6 99.9 27.3 97.1C23.1 94.4 20.1 90.8 16.9 87.2C13.7 83.5 9.0 79.9 8.2 75.3C7.4 70.6 11.4 64.1 12.1 59.2C12.9 54.4 12.0 50.5 12.8 46.2C13.7 41.8 14.7 37.7 17.1 33.0C19.4 28.3 23.2 20.9 26.8 18.0C30.5 15.0 34.7 16.0 38.9 15.3C43.1 14.6 47.7 14.2 52.1 13.7C56.4 13.2 60.1 12.4 65.1 12.2C70.1 12.1 77.0 11.6 81.8 12.8C86.7 13.9 91.3 16.3 94.4 19.4C97.5 22.5 98.5 26.9 100.5 31.5C102.4 36.1 104.1 41.9 105.8 47.0C107.6 52.2 109.9 57.3 110.9 62.3Z"/>
+      <path fill="url(#g-wax)" stroke="#6a7486" stroke-width=".9"
+        d="M110.9 62.3C111.9 67.4 113.0 72.9 111.7 77.3C110.5 81.7 106.8 85.8 103.2 88.9C99.7 91.9 93.9 92.5 90.6 95.5C87.3 98.5 87.3 104.1 83.6 107.0C79.8 109.9 72.9 112.3 68.2 113.0C63.5 113.6 59.5 112.6 55.2 111.0C50.9 109.5 47.0 105.8 42.4 103.5C37.7 101.2 31.6 99.9 27.3 97.1C23.1 94.4 20.1 90.8 16.9 87.2C13.7 83.5 9.0 79.9 8.2 75.3C7.4 70.6 11.4 64.1 12.1 59.2C12.9 54.4 12.0 50.5 12.8 46.2C13.7 41.8 14.7 37.7 17.1 33.0C19.4 28.3 23.2 20.9 26.8 18.0C30.5 15.0 34.7 16.0 38.9 15.3C43.1 14.6 47.7 14.2 52.1 13.7C56.4 13.2 60.1 12.4 65.1 12.2C70.1 12.1 77.0 11.6 81.8 12.8C86.7 13.9 91.3 16.3 94.4 19.4C97.5 22.5 98.5 26.9 100.5 31.5C102.4 36.1 104.1 41.9 105.8 47.0C107.6 52.2 109.9 57.3 110.9 62.3Z"/>
+      <!-- disco central em baixo-relevo -->
+      <circle cx="60" cy="61" r="37" fill="url(#g-wax-in)"/>
+      <circle cx="61" cy="62" r="37" fill="none" stroke="#f6f8fb" stroke-opacity=".7" stroke-width="1.3"/>
+      <circle cx="59.2" cy="60.2" r="37" fill="none" stroke="#5f6a7d" stroke-opacity=".75" stroke-width="1.3"/>
+      <circle cx="60" cy="61" r="31.5" fill="none" stroke="#7a8498" stroke-opacity=".55" stroke-width=".7" stroke-dasharray="1.2 2.6"/>
+      <!-- XV estampado -->
+      <g font-family="'Cormorant Garamond', Georgia, serif" font-weight="700" font-size="40" text-anchor="middle" letter-spacing="1">
+        <text x="61" y="75.4" fill="#f4f6fa" fill-opacity=".85">XV</text>
+        <text x="59.3" y="73.6" fill="#566074" fill-opacity=".9">XV</text>
+        <text x="60.2" y="74.5" fill="#8e98aa">XV</text>
+      </g>
+    </symbol>
+
+    <!-- CANTO ORNAMENTAL da moldura (canto superior esquerdo; espelhado por CSS) -->
+    <symbol id="ornament-corner" viewBox="0 0 70 70">
+      <g fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round">
+        <path d="M14 9C27 9 31 9.4 37 14.5C42 19 38.5 25.5 32.5 24.2C28 23.2 27.5 17.8 31.8 17.4"/>
+        <path d="M9 14C9 27 9.4 31 14.5 37C19 42 25.5 38.5 24.2 32.5C23.2 28 17.8 27.5 17.4 31.8"/>
+        <path d="M43 9.6C48 9.2 52 9.2 57 9.6" stroke-opacity=".7"/>
+        <path d="M9.6 43C9.2 48 9.2 52 9.6 57" stroke-opacity=".7"/>
+      </g>
+      <g fill="currentColor">
+        <path d="M9 3.6L14.4 9L9 14.4L3.6 9Z"/>
+        <circle cx="62" cy="9.6" r="1.5"/>
+        <circle cx="9.6" cy="62" r="1.5"/>
+        <circle cx="21" cy="21" r="1.6"/>
+      </g>
+    </symbol>
+
+    <!-- DIVISOR: fio, losango e pontos -->
+    <symbol id="ornament-divider" viewBox="0 0 220 16">
+      <g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
+        <path d="M2 8H86"/><path d="M134 8H218"/>
+        <path d="M96 8H98M122 8H124" stroke-width="2.6"/>
+      </g>
+      <path fill="currentColor" d="M110 2L116 8L110 14L104 8Z"/>
+    </symbol>
+
+    <!-- ÍCONES DE LINHA (24×24) -->
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M7.8 12.4l2.8 2.8 5.6-5.8"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="1.6"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><path d="M8.5 14h2M13.5 14h2"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="9.5" rx="1"/><rect x="3" y="7.5" width="18" height="3.2" rx=".8"/><path d="M12 7.5V20"/><path d="M12 7.5C10.6 4 6.8 4 7.7 6.2c.4 1 2.5 1.3 4.3 1.3zM12 7.5c1.4-3.5 5.2-3.5 4.3-1.3-.4 1-2.5 1.3-4.3 1.3z"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M9 17.5V6l10-2v11.5"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="15.5" r="2.5"/></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><path d="M4 5.5h16v11H10.2L6 20v-3.5H4z"/><path d="M8 9.5h8M8 12.5h5"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path d="M15.4 9.2a4 4 0 0 1 0 5.6M18 6.8a7.5 7.5 0 0 1 0 10.4"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path d="M16 9.6l4.6 4.8M20.6 9.6L16 14.4"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M9 5.5l6.5 6.5L9 18.5"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M5.5 9l6.5 6.5L18.5 9"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7.5 11l4.5 4.5 4.5-4.5M5 19.5h14"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4.5h5.5V10M19.5 4.5L11 13M17 14v4.5a1 1 0 0 1-1 1H5.5a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1H10"/></symbol>
+  </svg>
+
+
+  <!-- =====================================================================
+       1. ENVELOPE (tela inicial) — toque no lacre para abrir
+       Camadas (de trás pra frente): fundo → aba → cartão → bolso → lacre
+       ===================================================================== -->
+  <section id="intro" class="intro" aria-label="Convite fechado">
+    <div class="intro__stage">
+
+      <div class="env" id="envelope">
+        <div class="env__shadow"></div>
+
+        <!-- fundo interno do envelope -->
+        <svg class="env__layer env__back" viewBox="0 0 400 294" aria-hidden="true" focusable="false">
+          <rect width="400" height="294" fill="#070f28"/>
+          <rect width="400" height="294" fill="url(#p-lining)"/>
+        </svg>
+
+        <!-- aba (gira em 3D): face externa + forro interno -->
+        <div class="env__flap" aria-hidden="true">
+          <svg class="flap__face flap__face--out" viewBox="0 0 400 180" focusable="false">
+            <path d="M0 0H400L200 180Z" fill="#12244f"/>
+            <path d="M14 3.5L200 166L386 3.5" fill="none" stroke="#fff" stroke-opacity=".07" stroke-width="1" vector-effect="non-scaling-stroke"/>
+            <path d="M0 0H400L200 180Z" fill="none" stroke="#c5cedb" stroke-opacity=".34" stroke-width="1" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+          </svg>
+          <svg class="flap__face flap__face--in" viewBox="0 0 400 180" focusable="false">
+            <path d="M0 0H400L200 180Z" fill="#0a1431"/>
+            <path d="M0 0H400L200 180Z" fill="url(#p-lining)"/>
+            <path d="M0 0H400L200 180Z" fill="none" stroke="#c5cedb" stroke-opacity=".3" stroke-width="1" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <!-- cartão que sobe de dentro do envelope -->
+        <div class="env__card" aria-hidden="true">
+          <div class="cover">
+            <span class="cover__xv" data-cfg="pessoa.xv"></span>
+            <span class="cover__rule"></span>
+            <span class="cover__name script" data-cfg="pessoa.nome"></span>
+            <span class="cover__sub" data-cfg="textos.capaConvite"></span>
+          </div>
+        </div>
+
+        <!-- bolso do envelope (frente): laterais + base -->
+        <svg class="env__layer env__pocket" viewBox="0 0 400 294" aria-hidden="true" focusable="false">
+          <path d="M0 0L200 152L0 294Z" fill="#0e1d47"/>
+          <path d="M400 0L200 152L400 294Z" fill="#0d1c44"/>
+          <path d="M0 294L200 138L400 294Z" fill="#0b1840"/>
+          <path d="M0 0L200 152L0 294M400 0L200 152L400 294" fill="none" stroke="#c5cedb" stroke-opacity=".2" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          <path d="M0 294L200 138L400 294" fill="none" stroke="#c5cedb" stroke-opacity=".3" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          <path d="M0 294L200 144L400 294" fill="none" stroke="#fff" stroke-opacity=".05" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          <rect x=".5" y=".5" width="399" height="293" fill="none" stroke="#c5cedb" stroke-opacity=".22" vector-effect="non-scaling-stroke"/>
+        </svg>
+
+        <!-- nome "endereçado" no envelope -->
+        <p class="env__name script" aria-hidden="true" data-cfg="pessoa.nome"></p>
+
+        <!-- LACRE: dois pedaços que se separam quando o convite é aberto -->
+        <button class="seal" id="seal" type="button" aria-label="Abrir o convite">
+          <span class="seal__ring" aria-hidden="true"></span>
+          <svg class="seal__whole" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><use href="#seal-art"/></svg>
+          <span class="seal__half seal__half--l" aria-hidden="true"><svg viewBox="0 0 120 120" focusable="false"><use href="#seal-art"/></svg></span>
+          <span class="seal__half seal__half--r" aria-hidden="true"><svg viewBox="0 0 120 120" focusable="false"><use href="#seal-art"/></svg></span>
+          <span class="seal__shards" id="shards" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <p class="intro__hint" data-cfg="textos.abrir"></p>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       2. CONVITE (aparece depois que o envelope abre)
+       ===================================================================== -->
+  <main id="main" class="main" inert aria-hidden="true">
+
+    <!-- Botão de música (fixo no canto) -->
+    <button class="sound" id="sound" type="button" aria-label="Silenciar música">
+      <svg class="ico ico--on" aria-hidden="true"><use href="#i-sound"/></svg>
+      <svg class="ico ico--off" aria-hidden="true"><use href="#i-mute"/></svg>
+    </button>
+
+    <!-- ---------- DETALHES DA CELEBRAÇÃO ---------- -->
+    <section id="detalhes" class="screen screen--center" aria-labelledby="detalhes-titulo">
+      <article class="card card--details reveal">
+        <span class="card__corner card__corner--tl" aria-hidden="true"><svg><use href="#ornament-corner"/></svg></span>
+        <span class="card__corner card__corner--tr" aria-hidden="true"><svg><use href="#ornament-corner"/></svg></span>
+        <span class="card__corner card__corner--bl" aria-hidden="true"><svg><use href="#ornament-corner"/></svg></span>
+        <span class="card__corner card__corner--br" aria-hidden="true"><svg><use href="#ornament-corner"/></svg></span>
+
+        <div class="medal" aria-hidden="true"><span data-cfg="pessoa.xv"></span></div>
+
+        <h1 class="eyebrow" id="detalhes-titulo" data-cfg="textos.detalhesTitulo"></h1>
+
+        <p class="name script">
+          <span class="name__a" data-cfg="pessoa.primeiroNome"></span>
+          <span class="name__b" data-cfg="pessoa.sobrenome"></span>
+        </p>
+        <p class="age" data-cfg="pessoa.titulo"></p>
+
+        <svg class="divider" aria-hidden="true"><use href="#ornament-divider"/></svg>
+
+        <dl class="facts">
+          <div class="fact">
+            <dt data-cfg="textos.rotuloData"></dt>
+            <dd>
+              <span class="fact__small" id="f-weekday"></span>
+              <span class="fact__big" id="f-date"></span>
+            </dd>
+          </div>
+          <div class="fact">
+            <dt data-cfg="textos.rotuloHora"></dt>
+            <dd><span class="fact__big" id="f-time"></span></dd>
+          </div>
+          <div class="fact">
+            <dt data-cfg="textos.rotuloLocal"></dt>
+            <dd>
+              <span class="fact__big" id="f-place"></span>
+              <span class="fact__small" id="f-street"></span>
+              <span class="fact__small" id="f-city"></span>
+            </dd>
+          </div>
+          <div class="fact">
+            <dt data-cfg="textos.rotuloTraje"></dt>
+            <dd><span class="fact__big" id="f-dress"></span></dd>
+          </div>
+        </dl>
+      </article>
+
+      <a class="cue" href="#menu" aria-label="Ver opções do convite">
+        <span data-cfg="textos.rolar"></span>
+        <svg class="ico" aria-hidden="true"><use href="#i-down"/></svg>
+      </a>
+    </section>
+
+    <!-- ---------- MENU DE BOTÕES ---------- -->
+    <section id="menu" class="section" aria-labelledby="menu-titulo">
+      <h2 class="section__title reveal" id="menu-titulo" data-cfg="textos.menuTitulo"></h2>
+      <svg class="divider reveal" aria-hidden="true"><use href="#ornament-divider"/></svg>
+
+      <nav class="menu" aria-label="Opções do convite">
+        <button class="btn btn--primary reveal" type="button" data-open="rsvp">
+          <svg class="btn__ico" aria-hidden="true"><use href="#i-check"/></svg>
+          <span class="btn__txt"><b data-cfg="textos.menu.rsvp.titulo"></b><small data-cfg="textos.menu.rsvp.sub"></small></span>
+          <svg class="btn__go" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </button>
+
+        <a class="btn reveal" id="btn-maps" href="#" target="_blank" rel="noopener noreferrer">
+          <svg class="btn__ico" aria-hidden="true"><use href="#i-pin"/></svg>
+          <span class="btn__txt"><b data-cfg="textos.menu.mapa.titulo"></b><small data-cfg="textos.menu.mapa.sub"></small></span>
+          <svg class="btn__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+
+        <button class="btn reveal" type="button" data-open="agenda">
+          <svg class="btn__ico" aria-hidden="true"><use href="#i-cal"/></svg>
+          <span class="btn__txt"><b data-cfg="textos.menu.agenda.titulo"></b><small data-cfg="textos.menu.agenda.sub"></small></span>
+          <svg class="btn__go" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </button>
+
+        <button class="btn reveal" type="button" data-open="presentes">
+          <svg class="btn__ico" aria-hidden="true"><use href="#i-gift"/></svg>
+          <span class="btn__txt"><b data-cfg="textos.menu.presentes.titulo"></b><small data-cfg="textos.menu.presentes.sub"></small></span>
+          <svg class="btn__go" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </button>
+
+        <button class="btn reveal" type="button" data-open="musica">
+          <svg class="btn__ico" aria-hidden="true"><use href="#i-note"/></svg>
+          <span class="btn__txt"><b data-cfg="textos.menu.musica.titulo"></b><small data-cfg="textos.menu.musica.sub"></small></span>
+          <svg class="btn__go" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </button>
+
+        <button class="btn reveal" type="button" data-open="recado">
+          <svg class="btn__ico" aria-hidden="true"><use href="#i-msg"/></svg>
+          <span class="btn__txt"><b data-cfg="textos.menu.recado.titulo"></b><small data-cfg="textos.menu.recado.sub"></small></span>
+          <svg class="btn__go" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </button>
+      </nav>
+    </section>
+
+    <!-- ---------- MANUAL DO CONVIDADO ---------- -->
+    <section id="manual" class="section" aria-labelledby="manual-titulo">
+      <article class="card card--manual reveal">
+        <span class="card__corner card__corner--tl" aria-hidden="true"><svg><use href="#ornament-corner"/></svg></span>
+        <span class="card__corner card__corner--tr" aria-hidden="true"><svg><use href="#ornament-corner"/></svg></span>
+        <span class="card__corner card__corner--bl" aria-hidden="true"><svg><use href="#ornament-corner"/></svg></span>
+        <span class="card__corner card__corner--br" aria-hidden="true"><svg><use href="#ornament-corner"/></svg></span>
+
+        <h2 class="eyebrow" id="manual-titulo" data-cfg="textos.manualTitulo"></h2>
+        <svg class="divider" aria-hidden="true"><use href="#ornament-divider"/></svg>
+        <ol class="manual" id="manual-lista"></ol>
+      </article>
+    </section>
+
+    <!-- ---------- RODAPÉ ---------- -->
+    <footer class="footer">
+      <svg class="footer__seal reveal" aria-hidden="true" viewBox="0 0 120 120" focusable="false"><use href="#seal-art"/></svg>
+      <p class="footer__line reveal" data-cfg="textos.rodape"></p>
+      <p class="footer__name script reveal" data-cfg="pessoa.nome"></p>
+    </footer>
+  </main>
+
+
+  <!-- =====================================================================
+       3. JANELAS (bottom sheets) — formulários e informações
+       ===================================================================== -->
+
+  <!-- Confirmar presença -->
+  <div class="sheet" id="sheet-rsvp" role="dialog" aria-modal="true" aria-labelledby="rsvp-titulo" hidden>
+    <div class="sheet__backdrop" data-close></div>
+    <div class="sheet__panel">
+      <button class="sheet__close" type="button" data-close aria-label="Fechar"><svg class="ico" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <h2 class="sheet__title" id="rsvp-titulo" data-cfg="textos.rsvp.titulo"></h2>
+      <p class="sheet__lead" data-cfg="textos.rsvp.intro"></p>
+      <form class="form" id="form-rsvp" novalidate>
+        <div class="field">
+          <label for="rsvp-nome" data-cfg="textos.rsvp.nomeLabel"></label>
+          <input id="rsvp-nome" name="nome" type="text" autocomplete="name" autocapitalize="words" enterkeyhint="done" maxlength="80">
+          <p class="field__error" id="rsvp-nome-erro" role="alert" hidden></p>
+        </div>
+        <div class="field" id="rsvp-qtd-campo">
+          <span class="label" id="rsvp-qtd-label" data-cfg="textos.rsvp.qtdLabel"></span>
+          <div class="stepper" role="group" aria-labelledby="rsvp-qtd-label">
+            <button class="stepper__btn" type="button" data-step="-1" aria-label="Diminuir quantidade">&minus;</button>
+            <output class="stepper__value" id="rsvp-qtd" aria-live="polite">1</output>
+            <button class="stepper__btn" type="button" data-step="1" aria-label="Aumentar quantidade">+</button>
+          </div>
+          <p class="field__hint" data-cfg="textos.rsvp.qtdDica"></p>
+        </div>
+        <button class="btn btn--primary btn--submit" type="submit"><span data-cfg="textos.enviarWhats"></span></button>
+        <p class="form__after" hidden><span data-cfg="textos.naoAbriu"></span> <a href="#" target="_blank" rel="noopener noreferrer" data-cfg="textos.toqueAqui"></a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Adicionar à agenda -->
+  <div class="sheet" id="sheet-agenda" role="dialog" aria-modal="true" aria-labelledby="agenda-titulo" hidden>
+    <div class="sheet__backdrop" data-close></div>
+    <div class="sheet__panel">
+      <button class="sheet__close" type="button" data-close aria-label="Fechar"><svg class="ico" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <h2 class="sheet__title" id="agenda-titulo" data-cfg="textos.agenda.titulo"></h2>
+      <p class="sheet__lead" data-cfg="textos.agenda.intro"></p>
+      <div class="stack">
+        <button class="btn btn--primary" type="button" id="btn-ics">
+          <svg class="btn__ico" aria-hidden="true"><use href="#i-download"/></svg>
+          <span class="btn__txt"><b data-cfg="textos.agenda.icsTitulo"></b><small data-cfg="textos.agenda.icsSub"></small></span>
+        </button>
+        <a class="btn" id="btn-gcal" href="#" target="_blank" rel="noopener noreferrer">
+          <svg class="btn__ico" aria-hidden="true"><use href="#i-cal"/></svg>
+          <span class="btn__txt"><b data-cfg="textos.agenda.gcalTitulo"></b><small data-cfg="textos.agenda.gcalSub"></small></span>
+          <svg class="btn__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+      </div>
+      <p class="field__hint" data-cfg="textos.agenda.dica"></p>
+    </div>
+  </div>
+
+  <!-- Sugestão de presentes -->
+  <div class="sheet" id="sheet-presentes" role="dialog" aria-modal="true" aria-labelledby="presentes-titulo" hidden>
+    <div class="sheet__backdrop" data-close></div>
+    <div class="sheet__panel">
+      <button class="sheet__close" type="button" data-close aria-label="Fechar"><svg class="ico" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <h2 class="sheet__title" id="presentes-titulo" data-cfg="textos.menu.presentes.titulo"></h2>
+      <p class="sheet__lead sheet__lead--quote" data-cfg="presentes.aviso"></p>
+      <div id="presentes-corpo"></div>
+    </div>
+  </div>
+
+  <!-- Sugerir uma música -->
+  <div class="sheet" id="sheet-musica" role="dialog" aria-modal="true" aria-labelledby="musica-titulo" hidden>
+    <div class="sheet__backdrop" data-close></div>
+    <div class="sheet__panel">
+      <button class="sheet__close" type="button" data-close aria-label="Fechar"><svg class="ico" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <h2 class="sheet__title" id="musica-titulo" data-cfg="textos.musica.titulo"></h2>
+      <p class="sheet__lead" data-cfg="textos.musica.intro"></p>
+      <form class="form" id="form-musica" novalidate>
+        <div class="field">
+          <label for="musica-nome" data-cfg="textos.musica.musicaLabel"></label>
+          <input id="musica-nome" name="musica" type="text" autocomplete="off" autocapitalize="words" maxlength="100">
+          <p class="field__error" id="musica-nome-erro" role="alert" hidden></p>
+        </div>
+        <div class="field">
+          <label for="musica-artista" data-cfg="textos.musica.artistaLabel"></label>
+          <input id="musica-artista" name="artista" type="text" autocomplete="off" autocapitalize="words" maxlength="100">
+          <p class="field__error" id="musica-artista-erro" role="alert" hidden></p>
+        </div>
+        <div class="field">
+          <label for="musica-de"><span data-cfg="textos.seuNome"></span> <em data-cfg="textos.opcional"></em></label>
+          <input id="musica-de" name="de" type="text" autocomplete="name" autocapitalize="words" enterkeyhint="done" maxlength="80">
+        </div>
+        <button class="btn btn--primary btn--submit" type="submit"><span data-cfg="textos.enviarWhats"></span></button>
+        <p class="form__after" hidden><span data-cfg="textos.naoAbriu"></span> <a href="#" target="_blank" rel="noopener noreferrer" data-cfg="textos.toqueAqui"></a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Enviar um recado -->
+  <div class="sheet" id="sheet-recado" role="dialog" aria-modal="true" aria-labelledby="recado-titulo" hidden>
+    <div class="sheet__backdrop" data-close></div>
+    <div class="sheet__panel">
+      <button class="sheet__close" type="button" data-close aria-label="Fechar"><svg class="ico" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <h2 class="sheet__title" id="recado-titulo" data-cfg="textos.recado.titulo"></h2>
+      <p class="sheet__lead" data-cfg="textos.recado.intro"></p>
+      <form class="form" id="form-recado" novalidate>
+        <div class="field">
+          <label for="recado-texto" data-cfg="textos.recado.label"></label>
+          <textarea id="recado-texto" name="recado" rows="5" maxlength="600"></textarea>
+          <p class="field__error" id="recado-texto-erro" role="alert" hidden></p>
+        </div>
+        <div class="field">
+          <label for="recado-de"><span data-cfg="textos.seuNome"></span> <em data-cfg="textos.opcional"></em></label>
+          <input id="recado-de" name="de" type="text" autocomplete="name" autocapitalize="words" enterkeyhint="done" maxlength="80">
+        </div>
+        <button class="btn btn--primary btn--submit" type="submit"><span data-cfg="textos.enviarWhats"></span></button>
+        <p class="form__after" hidden><span data-cfg="textos.naoAbriu"></span> <a href="#" target="_blank" rel="noopener noreferrer" data-cfg="textos.toqueAqui"></a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Aviso rápido (toast) -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript><p class="noscript">Para abrir o convite, ative o JavaScript no navegador.</p></noscript>
+
+  <!-- Música de fundo: troque o arquivo assets/musica.mp3 (mesmo nome) -->
+  <audio id="bgm" src="assets/musica.mp3" loop preload="auto" playsinline></audio>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

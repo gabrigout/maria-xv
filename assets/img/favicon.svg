@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="30" fill="#0b1737"/>
+  <circle cx="32" cy="32" r="27" fill="none" stroke="#c5cedb" stroke-width="2"/>
+  <circle cx="32" cy="32" r="23" fill="none" stroke="#c5cedb" stroke-opacity=".4" stroke-width="1"/>
+  <text x="32" y="40" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="22" fill="#e6eaf1" letter-spacing=".5">XV</text>
+</svg>

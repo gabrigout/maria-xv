@@ -1,0 +1,548 @@
+/* ==========================================================================
+   CONVITE XV ANOS — MARIA FERNANDA
+   Folha de estilo (mobile-first). Ordem:
+     0. Variáveis (cores, fontes)      5. Menu de botões
+     1. Base e utilitários             6. Manual do Convidado e rodapé
+     2. Envelope (tela inicial)        7. Janelas (sheets), formulários, aviso
+     3. Lacre de cera                  8. Entrada suave (scroll reveal)
+     4. Detalhes da celebração         9. Movimento reduzido
+   ========================================================================== */
+
+/* ---------- 0. VARIÁVEIS ------------------------------------------------- */
+:root {
+  /* Azul meia-noite (nada de azul-bebê) */
+  --navy-950: #040817;
+  --navy-900: #060c1f;
+  --navy-850: #09122b;
+  --navy-800: #0b1737;
+  --navy-700: #102246;
+  --navy-600: #19305f;
+
+  /* Prata */
+  --silver-100: #f1f4f8;
+  --silver-200: #dfe5ee;
+  --silver-300: #c5cedb;
+  --silver-400: #a3aebf;
+  --silver-500: #7f8ba0;
+  --line: rgba(197, 206, 219, .55);
+  --line-soft: rgba(197, 206, 219, .22);
+
+  /* Tipografia */
+  --serif: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  --script: "Great Vibes", "Snell Roundhand", "Brush Script MT", cursive;
+
+  --ease: cubic-bezier(.22, .7, .2, 1);
+
+  /* Áreas seguras (notch / barra home do iPhone) */
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+
+  /* Textura de papel (ruído fino, quase imperceptível) */
+  --paper: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .8  0 0 0 0 .85  0 0 0 0 .95  0 0 0 .12 -.026'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- 1. BASE ------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: var(--navy-950);
+  overflow-x: hidden;          /* nunca rolar para os lados */
+  overflow-x: clip;
+}
+html.is-locked, html.is-locked body { overflow: hidden; height: 100%; overscroll-behavior: none; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overflow-x: clip;
+  background-color: var(--navy-900);
+  background-image: var(--paper);
+  color: var(--silver-100);
+  font-family: var(--serif);
+  font-size: 1.1875rem;        /* 19px: Cormorant é pequena, então subimos o corpo */
+  font-weight: 500;
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, p, dl, dd, ol { margin: 0; }
+button, input, textarea { font: inherit; color: inherit; }
+button { -webkit-appearance: none; appearance: none; }
+a { color: inherit; }
+img, svg { max-width: 100%; }
+
+.script { font-family: var(--script); font-weight: 400; letter-spacing: 0; }
+
+/* Ícones de linha (herdam a cor do texto) */
+.ico, .btn__ico, .btn__go {
+  width: 24px; height: 24px; flex: none; display: block;
+  fill: none; stroke: currentColor; stroke-width: 1.4;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Foco visível para quem usa teclado */
+:focus-visible { outline: 2px solid var(--silver-100); outline-offset: 3px; }
+
+.noscript { position: fixed; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; background: var(--navy-950); z-index: 200; }
+
+
+/* ---------- 2. ENVELOPE (tela inicial) ----------------------------------- */
+.intro {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-items: center;
+  padding: calc(16px + var(--safe-t)) calc(16px + var(--safe-r)) calc(16px + var(--safe-b)) calc(16px + var(--safe-l));
+  background-color: var(--navy-950);
+  background-image: var(--paper);
+  touch-action: none;
+  cursor: pointer;
+}
+.intro[hidden] { display: none; }
+
+.intro__stage {
+  display: flex; flex-direction: column; align-items: center;
+  /* espaço extra no topo: a aba, ao abrir, sobe acima do envelope */
+  padding-top: 7vh;
+  will-change: transform, opacity;
+}
+
+/* O envelope: proporção fixa. Todas as camadas usam o mesmo viewBox (400×294). */
+.env {
+  position: relative;
+  /* altura útil = tela − aba aberta (60% do envelope) − texto; por isso o fator .85 */
+  width: min(86vw, 380px, calc((93vh - 110px) * .85));
+  width: min(86vw, 380px, calc((93dvh - 110px) * .85));
+  aspect-ratio: 400 / 294;
+  perspective: 1100px;
+  perspective-origin: 50% 0;
+  container-type: inline-size;   /* permite medir fontes em % da largura do envelope (cqw) */
+}
+.env__shadow { position: absolute; inset: 0; z-index: 0; box-shadow: 0 28px 38px -16px rgba(0, 0, 0, .7); }
+.env__layer { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.env__back   { z-index: 1; }
+.env__pocket { z-index: 4; }
+
+/* Aba: gira em 3D em torno da borda de cima */
+.env__flap {
+  position: absolute; left: 0; top: 0; width: 100%; height: 61.2245%;   /* 180 / 294 */
+  z-index: 5;
+  transform-origin: 50% 0;
+  transform-style: preserve-3d;
+}
+.flap__face {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.flap__face--in { transform: rotateY(180deg); }
+
+/* Cartão que sobe de dentro do envelope */
+.env__card {
+  position: absolute; left: 7%; top: 10%; width: 86%; height: 80%;
+  z-index: 3;
+  background-color: var(--navy-700);
+  background-image: var(--paper);
+  box-shadow: 0 -3px 14px rgba(0, 0, 0, .35);
+}
+.env__card::before { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(197, 206, 219, .55); }
+.env__card::after  { content: ""; position: absolute; inset: 9px; border: 1px solid rgba(197, 206, 219, .2); }
+.cover {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+  padding-top: 12%; text-align: center;
+}
+.cover__xv   { font-size: 4.6cqw; font-weight: 600; letter-spacing: .5em; margin-right: -.5em; color: var(--silver-200); }
+.cover__rule { display: block; width: 14%; height: 1px; margin: 3.2cqw 0 1cqw; background: var(--line); }
+.cover__name { font-size: 12cqw; line-height: 1.15; color: var(--silver-100); }
+.cover__sub  { margin-top: .5cqw; font-size: 3.8cqw; font-style: italic; letter-spacing: .06em; color: var(--silver-400); }
+
+/* Nome "endereçado" na frente do envelope */
+.env__name {
+  position: absolute; left: 0; right: 0; bottom: 5.5%; z-index: 4;
+  text-align: center; font-size: 9cqw; line-height: 1.1;
+  color: var(--silver-200); text-shadow: 0 1px 0 rgba(0, 0, 0, .5);
+  pointer-events: none;
+}
+
+.intro__hint {
+  margin-top: 30px;
+  font-size: .86rem; font-weight: 600; letter-spacing: .34em; margin-right: -.34em;
+  text-transform: uppercase; color: var(--silver-300);
+  animation: breathe 3.2s ease-in-out infinite;
+}
+
+/* --- Sequência de abertura (~2,3 s) ---------------------------------------
+   0 – 1,0 s   lacre quebra e cai
+   0,4 – 1,3 s aba gira para cima
+   1,0 – 2,0 s cartão sobe
+   2,3 – 3,0 s tudo se dissolve para a tela de detalhes (o JS controla esse tempo)
+   --------------------------------------------------------------------------- */
+.intro.is-opening .intro__hint { animation: none; opacity: 0; transition: opacity .35s ease; }
+
+.intro.is-opening .env__flap { animation: flap-open .9s .42s cubic-bezier(.45, .05, .25, 1) both; }
+@keyframes flap-open {
+  0%     { transform: rotateX(0deg);   z-index: 5; }
+  49.9%  { z-index: 5; }
+  50%    { z-index: 2; }
+  100%   { transform: rotateX(180deg); z-index: 2; }
+}
+
+.intro.is-opening .env__card { animation: card-rise 1s 1s var(--ease) both; }
+@keyframes card-rise {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-54%); }
+}
+
+.intro.is-leaving { animation: intro-out .75s ease-in forwards; pointer-events: none; }
+.intro.is-leaving .intro__stage { animation: stage-out .75s ease-in forwards; }
+@keyframes intro-out { to { opacity: 0; } }
+@keyframes stage-out { to { transform: scale(1.07) translateY(-2%); } }
+
+@keyframes breathe { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+
+
+/* ---------- 3. LACRE DE CERA --------------------------------------------- */
+.seal {
+  position: absolute; left: 50%; top: 61.2245%; z-index: 6;
+  width: 22cqw; min-width: 76px; max-width: 108px; aspect-ratio: 1;
+  padding: 0; border: 0; background: none;
+  transform: translate(-50%, -50%);
+  cursor: pointer; touch-action: manipulation;
+}
+.seal svg, .seal__half { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.seal__whole { filter: drop-shadow(0 4px 5px rgba(0, 0, 0, .5)); transition: transform .18s var(--ease); }
+.seal:active .seal__whole { transform: scale(.94); }
+
+/* anel discreto que convida ao toque (linha fina, sem brilho) */
+.seal__ring {
+  position: absolute; inset: -4%; border-radius: 50%;
+  border: 1px solid rgba(223, 229, 238, .6);
+  animation: ring 2.8s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes ring {
+  0%   { transform: scale(.92); opacity: .75; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Duas metades com a mesma rachadura em zigue-zague */
+.seal__half { visibility: hidden; pointer-events: none; will-change: transform, opacity; }
+.seal__half svg { filter: drop-shadow(0 4px 5px rgba(0, 0, 0, .5)); }
+.seal__half--l { clip-path: polygon(0 0, 53% 0, 47% 13%, 55% 27%, 46% 41%, 54% 55%, 45% 69%, 53% 84%, 48% 100%, 0 100%); transform-origin: 30% 50%; }
+.seal__half--r { clip-path: polygon(53% 0, 100% 0, 100% 100%, 48% 100%, 53% 84%, 45% 69%, 54% 55%, 46% 41%, 55% 27%, 47% 13%); transform-origin: 70% 50%; }
+
+.seal.is-breaking { pointer-events: none; }
+.seal.is-breaking .seal__ring { animation: none; opacity: 0; }
+.seal.is-breaking .seal__whole { visibility: hidden; }
+.seal.is-breaking .seal__half { visibility: visible; }
+.seal.is-breaking .seal__half--l { animation: half-l 1s cubic-bezier(.35, 0, .75, .5) forwards; }
+.seal.is-breaking .seal__half--r { animation: half-r 1.05s cubic-bezier(.35, 0, .75, .5) forwards; }
+@keyframes half-l {
+  0%   { transform: none; opacity: 1; }
+  16%  { transform: translate(-7%, -4%) rotate(-7deg); opacity: 1; }
+  100% { transform: translate(-40%, 215%) rotate(-52deg); opacity: 0; }
+}
+@keyframes half-r {
+  0%   { transform: none; opacity: 1; }
+  16%  { transform: translate(8%, -2%) rotate(8deg); opacity: 1; }
+  100% { transform: translate(34%, 240%) rotate(58deg); opacity: 0; }
+}
+
+/* Lasquinhas de cera (criadas pelo JS, cada uma com --dx --dy --r) */
+.seal__shards { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
+.seal__shard {
+  position: absolute; left: -4px; top: -4px; width: 8px; height: 8px;
+  background: linear-gradient(135deg, #f1f4f8, #98a2b3);
+  clip-path: polygon(50% 0, 100% 60%, 70% 100%, 10% 85%, 0 30%);
+  opacity: 0;
+  animation: shard .85s cubic-bezier(.2, .6, .4, 1) forwards;
+}
+@keyframes shard {
+  0%   { transform: translate(0, 0) rotate(0) scale(.5); opacity: 1; }
+  45%  { transform: translate(calc(var(--dx) * .8), var(--dy)) rotate(calc(var(--r) * .5)) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), calc(var(--dy) + 70px)) rotate(var(--r)) scale(.9); opacity: 0; }
+}
+
+
+/* ---------- 4. CONVITE: BASE, DETALHES ----------------------------------- */
+.main {
+  position: relative;
+  max-width: 520px; margin: 0 auto;
+  opacity: 0; visibility: hidden;
+  padding-bottom: calc(40px + var(--safe-b));
+}
+.is-open .main { opacity: 1; visibility: visible; transition: opacity .9s ease; }
+
+/* Botão de música */
+.sound {
+  position: fixed; z-index: 60;
+  top: calc(12px + var(--safe-t)); right: calc(12px + var(--safe-r));
+  width: 48px; height: 48px; padding: 0; border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(7, 14, 34, .82); color: var(--silver-200);
+  border: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  opacity: 0; pointer-events: none;
+  transition: opacity .8s ease .4s, transform .16s var(--ease), background-color .2s;
+  cursor: pointer; touch-action: manipulation;
+}
+.is-open .sound { opacity: 1; pointer-events: auto; }
+.sound:active { transform: scale(.92); background: var(--navy-700); }
+.sound .ico { grid-area: 1 / 1; }
+.sound .ico--off { display: none; }
+.sound.is-muted .ico--on { display: none; }
+.sound.is-muted .ico--off { display: block; }
+
+.screen { padding: calc(52px + var(--safe-t)) 16px 36px; }
+.screen--center {
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+}
+.section { padding: 56px 16px 8px; }
+
+/* Cartão com moldura prateada ornamentada */
+.card {
+  position: relative; width: 100%; max-width: 440px;
+  background-color: var(--navy-800);
+  background-image: var(--paper);
+  text-align: center;
+  box-shadow: 0 34px 50px -30px rgba(0, 0, 0, .85), 0 0 0 1px rgba(197, 206, 219, .05);
+}
+.card::before, .card::after { content: ""; position: absolute; pointer-events: none; }
+.card::before { inset: 10px; border: 1.5px solid var(--line); }   /* linha externa */
+.card::after  { inset: 18px; border: 1px solid var(--line-soft); } /* linha interna */
+
+.card__corner { position: absolute; z-index: 1; width: 64px; height: 64px; color: var(--silver-300); pointer-events: none; }
+.card__corner svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.card__corner--tl { top: 10px; left: 10px; }
+.card__corner--tr { top: 10px; right: 10px; transform: scaleX(-1); }
+.card__corner--bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+.card__corner--br { bottom: 10px; right: 10px; transform: scale(-1, -1); }
+
+.card--details { margin-top: 34px; padding: 60px 30px 52px; }
+
+/* Medalhão "XV" que cruza a moldura */
+.medal {
+  position: absolute; left: 50%; top: 10px; z-index: 2;
+  width: 66px; height: 66px; border-radius: 50%;
+  transform: translate(-50%, -50%);
+  display: grid; place-items: center;
+  background-color: var(--navy-800);
+  border: 1.5px solid var(--line);
+  box-shadow: inset 0 0 0 5px var(--navy-800), inset 0 0 0 6px var(--line-soft), 0 6px 14px rgba(0, 0, 0, .45);
+  font-size: 1.32rem; font-weight: 700; letter-spacing: .08em; text-indent: .08em; color: var(--silver-100);
+}
+
+.eyebrow {
+  position: relative; z-index: 2;
+  font-size: .88rem; font-weight: 600; letter-spacing: .26em; text-indent: .26em;
+  text-transform: uppercase; color: var(--silver-300);
+}
+
+.name { position: relative; z-index: 2; margin-top: 18px; font-size: clamp(3.6rem, 18.5vw, 5rem); line-height: 1; color: var(--silver-100); text-shadow: 0 1px 0 rgba(0, 0, 0, .55); }
+.name span { display: block; padding: .04em 0; }
+.name__a { transform: translateX(-.3em); }
+.name__b { transform: translateX(.26em); margin-top: -.12em; }
+
+.age { position: relative; z-index: 2; margin-top: 8px; font-size: .95rem; font-weight: 600; letter-spacing: .52em; text-indent: .52em; text-transform: uppercase; color: var(--silver-300); }
+
+.divider { display: block; width: 190px; height: 14px; margin: 26px auto; color: var(--silver-400); position: relative; z-index: 2; }
+
+.facts { position: relative; z-index: 2; display: grid; gap: 22px; }
+.fact dt { font-size: .76rem; font-weight: 600; letter-spacing: .3em; text-indent: .3em; text-transform: uppercase; color: var(--silver-500); margin-bottom: 4px; }
+.fact dd { display: flex; flex-direction: column; align-items: center; }
+.fact__big { font-size: 1.6rem; font-weight: 500; line-height: 1.15; color: var(--silver-100); }
+.fact__small { font-size: 1.08rem; font-style: italic; color: var(--silver-300); line-height: 1.3; }
+.fact dd > .fact__small:first-child { margin-bottom: 1px; }
+.fact__big + .fact__small { margin-top: 4px; }
+
+/* Indicador de rolagem */
+.cue {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  margin-top: 26px; padding: 8px 18px; min-height: 48px; justify-content: center;
+  font-size: .78rem; font-weight: 600; letter-spacing: .3em; text-indent: .3em; text-transform: uppercase;
+  color: var(--silver-400); text-decoration: none; touch-action: manipulation;
+}
+.cue .ico { animation: nudge 2.4s ease-in-out infinite; }
+@keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+
+/* ---------- 5. MENU DE BOTÕES -------------------------------------------- */
+.section__title { text-align: center; font-size: 1.9rem; font-weight: 500; font-style: italic; line-height: 1.2; letter-spacing: .01em; color: var(--silver-100); }
+#menu .divider { margin: 18px auto 30px; }
+
+.menu { display: grid; gap: 14px; max-width: 440px; margin: 0 auto; }
+
+.btn {
+  position: relative; display: flex; align-items: center; gap: 16px;
+  width: 100%; min-height: 68px; padding: 12px 18px;
+  background-color: var(--navy-800); color: var(--silver-100);
+  border: 1px solid var(--line); border-radius: 6px;
+  /* fio duplo interno: acabamento de papelaria */
+  box-shadow: inset 0 0 0 4px var(--navy-800), inset 0 0 0 5px rgba(197, 206, 219, .16);
+  text-align: left; text-decoration: none; font-family: var(--serif);
+  cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none;
+  transition: transform .16s var(--ease), background-color .2s ease, border-color .2s ease;
+}
+.btn__txt { min-width: 0; flex: 1; }
+.btn b { display: block; font-size: 1.24rem; font-weight: 600; letter-spacing: .02em; line-height: 1.15; }
+.btn small { display: block; margin-top: 3px; font-size: 1rem; font-style: italic; font-weight: 500; color: var(--silver-400); line-height: 1.2; }
+.btn__ico { width: 28px; height: 28px; color: var(--silver-200); }
+.btn__go { width: 20px; height: 20px; margin-left: auto; opacity: .55; }
+
+/* Feedback ao tocar */
+.btn:active, .btn.is-pressed { transform: scale(.975); background-color: var(--navy-700); border-color: var(--silver-200); }
+@media (hover: hover) { .btn:hover { border-color: var(--silver-200); } }
+
+.btn--primary { background-color: var(--silver-200); color: var(--navy-900); border-color: var(--silver-100); box-shadow: inset 0 0 0 4px var(--silver-200), inset 0 0 0 5px rgba(7, 14, 34, .3); }
+.btn--primary small { color: #3b4764; }
+.btn--primary .btn__ico { color: var(--navy-800); }
+.btn--primary:active, .btn--primary.is-pressed { background-color: var(--silver-300); border-color: var(--silver-100); }
+@media (hover: hover) { .btn--primary:hover { background-color: var(--silver-100); } }
+.btn--submit { justify-content: center; text-align: center; min-height: 60px; font-size: 1.2rem; font-weight: 700; letter-spacing: .06em; margin-top: 8px; }
+
+
+/* ---------- 6. MANUAL DO CONVIDADO E RODAPÉ ------------------------------ */
+.card--manual { margin: 0 auto; padding: 48px 28px 44px; }
+.card--manual .eyebrow { position: relative; z-index: 2; }
+.card--manual .divider { margin: 20px auto 6px; }
+
+.manual { position: relative; z-index: 2; list-style: none; padding: 0; text-align: left; }
+.manual li { display: grid; grid-template-columns: 38px 1fr; gap: 16px; align-items: start; padding: 17px 0; border-top: 1px solid var(--line-soft); }
+.manual li:first-child { border-top: 0; }
+.manual__n {
+  width: 38px; height: 38px; display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: 50%;
+  font-size: .98rem; font-weight: 600; letter-spacing: .04em; text-indent: .04em; color: var(--silver-200);
+  box-shadow: inset 0 0 0 3px var(--navy-800), inset 0 0 0 4px var(--line-soft);
+}
+.manual__t { padding-top: 5px; font-size: 1.2rem; line-height: 1.32; text-wrap: balance; }
+
+.footer { padding: 64px 24px 24px; text-align: center; }
+.footer__seal { display: block; width: 64px; height: 64px; margin: 0 auto 22px; filter: drop-shadow(0 4px 5px rgba(0, 0, 0, .5)); }
+.footer__line { font-size: 1.3rem; font-style: italic; color: var(--silver-200); }
+.footer__name { margin-top: 6px; font-size: 3.4rem; line-height: 1.2; color: var(--silver-100); text-shadow: 0 1px 0 rgba(0, 0, 0, .55); }
+
+
+/* ---------- 7. JANELAS (bottom sheets), FORMULÁRIOS, AVISO -------------- */
+.sheet {
+  position: fixed; left: 0; right: 0; z-index: 120;
+  /* o JS ajusta --vv-top e --vv-h quando o teclado do celular abre */
+  top: var(--vv-top, 0px); height: var(--vv-h, 100dvh);
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.sheet[hidden] { display: none; }
+.sheet__backdrop { position: absolute; inset: 0; background: rgba(3, 6, 16, .78); opacity: 0; transition: opacity .3s ease; }
+.sheet__panel {
+  position: relative; width: 100%; max-width: 520px; max-height: 100%;
+  overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  padding: 34px 22px calc(28px + var(--safe-b));
+  background-color: var(--navy-800); background-image: var(--paper);
+  border-top: 1.5px solid var(--line); border-radius: 18px 18px 0 0;
+  box-shadow: 0 -20px 50px rgba(0, 0, 0, .55);
+  transform: translateY(40px); opacity: 0;
+  transition: transform .42s var(--ease), opacity .3s ease;
+}
+.sheet__panel::before { content: ""; position: absolute; top: 10px; left: 50%; width: 38px; height: 3px; margin-left: -19px; border-radius: 2px; background: var(--line); }
+.sheet.is-open .sheet__backdrop { opacity: 1; }
+.sheet.is-open .sheet__panel { transform: none; opacity: 1; }
+
+.sheet__close {
+  position: absolute; top: 14px; right: 10px; width: 48px; height: 48px; padding: 0;
+  display: grid; place-items: center; background: none; border: 0; color: var(--silver-300);
+  cursor: pointer; touch-action: manipulation; transition: transform .16s var(--ease);
+}
+.sheet__close:active { transform: scale(.9); }
+.sheet__title { padding-right: 44px; font-size: 1.75rem; font-weight: 600; line-height: 1.15; color: var(--silver-100); }
+.sheet__lead { text-wrap: pretty; margin: 10px 0 22px; font-size: 1.12rem; color: var(--silver-300); line-height: 1.4; }
+.sheet__lead--quote { font-style: italic; font-size: 1.22rem; color: var(--silver-200); padding-left: 14px; border-left: 2px solid var(--line); }
+
+.stack { display: grid; gap: 14px; }
+
+.form { display: block; }
+.field { margin-bottom: 20px; }
+.field label, .field .label {
+  display: block; margin-bottom: 8px;
+  font-size: .78rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--silver-400);
+}
+.field label em { font-style: italic; text-transform: none; letter-spacing: .02em; font-weight: 500; font-size: .95rem; color: var(--silver-500); }
+.field input, .field textarea {
+  display: block; width: 100%; min-height: 54px; padding: 12px 14px;
+  background: rgba(5, 10, 26, .65); color: var(--silver-100);
+  border: 1px solid var(--line-soft); border-radius: 6px;
+  font-family: var(--serif); font-size: 1.25rem; font-weight: 500; line-height: 1.3;   /* ≥16px: evita zoom automático no iPhone */
+  -webkit-appearance: none; appearance: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.field textarea { resize: none; min-height: 132px; }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--silver-200); box-shadow: 0 0 0 3px rgba(197, 206, 219, .16); }
+.field [aria-invalid="true"] { border-color: #e4a3a3; }
+.field__error { margin-top: 8px; font-size: 1.02rem; font-style: italic; color: #efb4b4; }
+.field__error[hidden] { display: none; }
+.field__hint { margin-top: 10px; font-size: 1rem; font-style: italic; color: var(--silver-500); line-height: 1.35; }
+
+/* Seletor de quantidade com botões grandes */
+.stepper { display: grid; grid-template-columns: 58px 1fr 58px; height: 58px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: rgba(5, 10, 26, .65); }
+.stepper__btn { border: 0; background: none; color: var(--silver-100); font-size: 1.9rem; font-weight: 500; line-height: 1; cursor: pointer; touch-action: manipulation; transition: background-color .15s ease; }
+.stepper__btn:active { background: var(--navy-600); }
+.stepper__btn[disabled] { opacity: .3; }
+.stepper__value { display: grid; place-items: center; font-size: 1.7rem; font-weight: 600; border-inline: 1px solid var(--line-soft); }
+
+.form__after { margin-top: 16px; text-align: center; font-size: 1.05rem; font-style: italic; color: var(--silver-400); }
+.form__after[hidden] { display: none; }
+.form__after a { color: var(--silver-100); font-weight: 600; text-underline-offset: 3px; }
+
+/* Lista de presentes (em grupos) */
+.gift-group { margin-top: 22px; }
+.gift-group h3 {
+  margin: 0 0 4px; font-size: .8rem; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--silver-300);
+}
+.gift-group h3 small { margin-left: 10px; font-size: 1rem; font-style: italic; font-weight: 500; letter-spacing: .02em; text-transform: none; color: var(--silver-500); }
+.gift-line { padding-top: 6px; font-size: 1.15rem; line-height: 1.6; color: var(--silver-200); text-wrap: pretty; }
+.gifts { list-style: none; padding: 0; display: grid; gap: 0; margin: 2px 0 6px; }
+.gifts li { padding: 9px 0 9px 22px; position: relative; border-top: 1px solid var(--line-soft); font-size: 1.15rem; line-height: 1.3; }
+.gifts li:first-child { border-top: 0; }
+.gifts li::before { content: ""; position: absolute; left: 3px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; background: var(--silver-300); transform: rotate(45deg); }
+.placeholder-box { padding: 22px 18px; margin-bottom: 8px; text-align: center; font-size: 1.12rem; font-style: italic; color: var(--silver-400); border: 1px dashed var(--line); border-radius: 6px; }
+
+/* Aviso rápido */
+.toast {
+  position: fixed; left: 50%; bottom: calc(24px + var(--safe-b)); z-index: 300;
+  max-width: min(90vw, 420px); padding: 14px 22px;
+  background: var(--silver-100); color: var(--navy-900); border-radius: 6px;
+  font-size: 1.08rem; font-weight: 600; text-align: center; line-height: 1.3;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, .5);
+  transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  transition: transform .35s var(--ease), opacity .3s ease;
+}
+.toast.is-on { transform: translate(-50%, 0); opacity: 1; }
+
+body.has-sheet { overflow: hidden; }
+
+
+/* ---------- 8. ENTRADA SUAVE (aparece ao rolar) -------------------------- */
+.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease) var(--d, 0s), transform .9s var(--ease) var(--d, 0s); }
+.js .reveal.is-in { opacity: 1; transform: none; }
+
+
+/* ---------- 9. MOVIMENTO REDUZIDO --------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+  .seal__ring, .cue .ico, .intro__hint { animation: none !important; }
+  .js .reveal { opacity: 1; transform: none; }
+  /* o envelope não faz a viagem: só um fade curto entre as telas */
+  .intro.is-leaving { animation: intro-out .3s linear forwards !important; }
+}
