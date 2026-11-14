@@ -88,6 +88,9 @@ img, svg { max-width: 100%; }
 /* sprite SVG (ícones/ornamentos): existe na página mas não ocupa espaço */
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 
+/* texto só para leitores de tela */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
 /* Ícones de linha (herdam a cor do texto) */
 .ico, .btn__ico, .btn__go {
   width: 24px; height: 24px; flex: none; display: block;
@@ -369,6 +372,13 @@ img, svg { max-width: 100%; }
 .fact dt { font-size: .76rem; font-weight: 600; letter-spacing: .3em; text-indent: .3em; text-transform: uppercase; color: var(--silver-500); margin-bottom: 4px; }
 .fact dd { display: flex; flex-direction: column; align-items: center; }
 .fact__big { font-size: 1.6rem; font-weight: 500; line-height: 1.15; color: var(--silver-100); }
+/* data: o dia em destaque moderado, mês e ano ao lado */
+.fact__date { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 2px; }
+.date__day { font-size: 3.05rem; font-weight: 600; line-height: .95; color: var(--silver-100); }
+.date__my { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding-left: 14px; border-left: 1px solid var(--line); }
+.date__my b { font-size: .95rem; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; color: var(--silver-200); }
+.date__my i { font-size: 1.2rem; font-style: normal; letter-spacing: .16em; color: var(--silver-300); }
+.fact__count { margin-top: 7px; font-size: 1.02rem; font-style: italic; color: var(--silver-400); line-height: 1.2; }
 .fact__small { font-size: 1.08rem; font-style: italic; color: var(--silver-300); line-height: 1.3; }
 .fact dd > .fact__small:first-child { margin-bottom: 1px; }
 .fact__big + .fact__small { margin-top: 4px; }
@@ -416,6 +426,11 @@ img, svg { max-width: 100%; }
 .btn--primary .btn__ico { color: var(--navy-800); }
 .btn--primary:active, .btn--primary.is-pressed { background-color: var(--silver-300); border-color: var(--silver-100); }
 @media (hover: hover) { .btn--primary:hover { background-color: var(--silver-100); } }
+/* par de botões menores (Waze e copiar endereço), abaixo do "Como chegar" */
+.btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.btn--small { flex-direction: column; justify-content: center; gap: 4px; min-height: 66px; padding: 10px 8px; text-align: center; }
+.btn--small b { font-size: 1.04rem; letter-spacing: .01em; }
+.btn--small .btn__ico { width: 24px; height: 24px; }
 .btn--submit { justify-content: center; text-align: center; min-height: 60px; font-size: 1.2rem; font-weight: 700; letter-spacing: .06em; margin-top: 8px; }
 
 
@@ -433,6 +448,10 @@ img, svg { max-width: 100%; }
   font-size: .98rem; font-weight: 600; letter-spacing: .04em; text-indent: .04em; color: var(--silver-200);
   box-shadow: inset 0 0 0 3px var(--navy-800), inset 0 0 0 4px var(--line-soft);
 }
+/* amostras das cores que os convidados não devem usar (riscadas) */
+.swatches { display: flex; gap: 10px; margin-top: 9px; }
+.swatch { position: relative; display: block; width: 22px; height: 22px; overflow: hidden; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .4); }
+.swatch::after { content: ""; position: absolute; left: 50%; top: -4px; width: 2px; height: 30px; background: #e9a8a8; transform: translateX(-50%) rotate(45deg); }
 .manual__t { padding-top: 5px; font-size: 1.2rem; line-height: 1.32; text-wrap: balance; }
 
 .footer { padding: 64px 24px 24px; text-align: center; }

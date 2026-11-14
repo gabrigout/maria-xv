@@ -131,6 +131,8 @@
     <symbol id="i-down" viewBox="0 0 24 24"><path d="M5.5 9l6.5 6.5L18.5 9"/></symbol>
     <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7.5 11l4.5 4.5 4.5-4.5M5 19.5h14"/></symbol>
     <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4.5h5.5V10M19.5 4.5L11 13M17 14v4.5a1 1 0 0 1-1 1H5.5a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1H10"/></symbol>
+    <symbol id="i-nav" viewBox="0 0 24 24"><path d="M12 3.5l6.8 16.2L12 16l-6.8 3.7z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="1.6"/><path d="M5 15V5.8A.8.8 0 0 1 5.8 5H15"/></symbol>
   </svg>
 
 
@@ -239,7 +241,8 @@
             <dt data-cfg="textos.rotuloData"></dt>
             <dd>
               <span class="fact__small" id="f-weekday"></span>
-              <span class="fact__big" id="f-date"></span>
+              <span class="fact__date" id="f-date"></span>
+              <span class="fact__count" id="f-count" hidden></span>
             </dd>
           </div>
           <div class="fact">
@@ -284,6 +287,17 @@
           <span class="btn__txt"><b data-cfg="textos.menu.mapa.titulo"></b><small data-cfg="textos.menu.mapa.sub"></small></span>
           <svg class="btn__go" aria-hidden="true"><use href="#i-external"/></svg>
         </a>
+
+        <div class="btn-row reveal">
+          <a class="btn btn--small" id="btn-waze" href="#" target="_blank" rel="noopener noreferrer">
+            <svg class="btn__ico" aria-hidden="true"><use href="#i-nav"/></svg>
+            <b data-cfg="textos.menu.waze.titulo"></b>
+          </a>
+          <button class="btn btn--small" id="btn-copiar" type="button">
+            <svg class="btn__ico" aria-hidden="true"><use href="#i-copy"/></svg>
+            <b data-cfg="textos.menu.copiar.titulo"></b>
+          </button>
+        </div>
 
         <button class="btn reveal" type="button" data-open="agenda">
           <svg class="btn__ico" aria-hidden="true"><use href="#i-cal"/></svg>

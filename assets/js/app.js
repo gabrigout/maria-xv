@@ -78,6 +78,16 @@ const CONFIG = {
     prazo: "2026-12-10",          // AAAA-MM-DD: aparece como "até 10 de dezembro". Deixe "" para não mostrar.
   },
 
+  /* ----- Contagem regressiva (uma linha discreta sob a data) -----
+     {n} vira o número de dias. mostrar: false desliga.                         */
+  contagem: {
+    mostrar: true,
+    varios: "faltam {n} dias",
+    um: "falta 1 dia",
+    hoje: "é hoje!",
+    depois: "Obrigada por celebrar conosco.",
+  },
+
   /* ----- Mensagens que abrem no WhatsApp -----
      {chaves} são trocadas pelo que o convidado digitou. Linhas cujo campo
      ficou vazio são removidas automaticamente.                                */
@@ -87,9 +97,10 @@ const CONFIG = {
     recado: "Olá! Deixo um recado para a Maria Fernanda:\n\n{recado}\n\n{de}",
   },
 
-  /* ----- Manual do Convidado (uma linha por item) ----- */
+  /* ----- Manual do Convidado (um item por linha) -----
+     Um item pode ser só o texto ou { texto, cores: [...] } para mostrar amostras de cor. */
   manual: [
-    "Não utilize roupas nas cores azul e prata",
+    { texto: "Não utilize roupas nas cores azul e prata", cores: ["#1f3f91", "#c5cedb"] },
     "Seja pontual e aproveite a festa conosco",
     "Confirme sua presença, por favor",
     "Convite individual e intransferível, ou seja, convidado não convida",
@@ -115,6 +126,8 @@ const CONFIG = {
       presentes: { titulo: "Sugestão de presentes", sub: "Ver sugestões" },
       musica:    { titulo: "Sugerir uma música",   sub: "Para a pista de dança" },
       recado:    { titulo: "Enviar um recado",     sub: "Uma mensagem para a Maria Fernanda" },
+      waze:      { titulo: "Abrir no Waze" },
+      copiar:    { titulo: "Copiar endereço" },
     },
 
     manualTitulo: "Manual do Convidado",
@@ -164,6 +177,8 @@ const CONFIG = {
     avisos: {
       abrindoWhats: "Abrindo o WhatsApp…",
       agendaBaixada: "Arquivo de agenda gerado.",
+      enderecoCopiado: "Endereço copiado.",
+      copiarFalhou: "Não consegui copiar. Segure o endereço para copiar.",
     },
     musicaSilenciar: "Silenciar música",
     musicaLigar: "Ativar música",
@@ -245,6 +260,13 @@ const CONFIG = {
     return {
       inicio, fim,
       diaSemana: cap(DIAS[semana]),
+      dia, mesNome: MESES[mes - 1], ano,
+      /** Dias que faltam para a festa, contando a data de hoje no fuso do evento (negativo = já passou). */
+      diasAte() {
+        const hoje = new Date(Date.now() + offsetMin * 60000);
+        const hojeUTC = Date.UTC(hoje.getUTCFullYear(), hoje.getUTCMonth(), hoje.getUTCDate());
+        return Math.round((Date.UTC(ano, mes - 1, dia) - hojeUTC) / 86400000);
+      },
       dataLonga: dia + ' de ' + MESES[mes - 1] + ' de ' + ano,
       hora: mm === 0 ? hh + 'h' : hh + 'h' + String(mm).padStart(2, '0'),
       enderecoCompleto: [L.nome, L.rua, L.bairro, L.cidade].filter(Boolean).join(', '),
@@ -281,7 +303,7 @@ const CONFIG = {
   function renderEvento() {
     const L = CONFIG.local;
     $('#f-weekday').textContent = Evento.diaSemana;
-    $('#f-date').textContent    = Evento.dataLonga;
+    montarData($('#f-date'));
     $('#f-time').textContent    = Evento.hora;
     $('#f-place').textContent   = L.nome;
     $('#f-street').textContent  = L.rua;
@@ -290,16 +312,51 @@ const CONFIG = {
 
     // Como chegar: busca no Google Maps pelo endereço
     $('#btn-maps').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(Evento.enderecoCompleto);
+    // Waze: abre o aplicativo (ou o site) já com a rota para o endereço
+    $('#btn-waze').href = 'https://waze.com/ul?q=' + encodeURIComponent(Evento.enderecoCompleto) + '&navigate=yes';
+  }
+
+  /** Data em destaque moderado: dia grande, mês e ano ao lado. O texto completo fica para leitores de tela. */
+  function montarData(el) {
+    const completo = document.createElement('span');
+    completo.className = 'sr-only'; completo.textContent = Evento.dataLonga;
+    const dia = document.createElement('span');
+    dia.className = 'date__day'; dia.textContent = String(Evento.dia); dia.setAttribute('aria-hidden', 'true');
+    const mes = document.createElement('b'); mes.textContent = Evento.mesNome;
+    const ano = document.createElement('i'); ano.textContent = String(Evento.ano);
+    const resto = document.createElement('span');
+    resto.className = 'date__my'; resto.setAttribute('aria-hidden', 'true'); resto.append(mes, ano);
+    el.append(completo, dia, resto);
+  }
+
+  /** Contagem regressiva: uma linha pequena sob a data. */
+  function renderContagem() {
+    const C = CONFIG.contagem;
+    if (!C || !C.mostrar) return;
+    const n = Evento.diasAte();
+    const texto = n > 1 ? C.varios.replace('{n}', n) : n === 1 ? C.um : n === 0 ? C.hoje : C.depois;
+    if (!texto) return;
+    const el = $('#f-count');
+    el.textContent = texto;
+    el.hidden = false;
   }
 
   function renderManual() {
     const ol = $('#manual-lista');
-    CONFIG.manual.forEach((texto, i) => {
+    CONFIG.manual.forEach((item, i) => {
+      const texto = typeof item === 'string' ? item : item.texto;
+      const cores = typeof item === 'string' ? null : item.cores;
       const li = document.createElement('li');
       const n = document.createElement('span');
       n.className = 'manual__n'; n.textContent = romano(i + 1); n.setAttribute('aria-hidden', 'true');
       const t = document.createElement('span');
       t.className = 'manual__t'; t.textContent = texto;
+      if (cores && cores.length) {                     // amostras (riscadas) das cores a evitar
+        const caixa = document.createElement('span');
+        caixa.className = 'swatches'; caixa.setAttribute('aria-hidden', 'true');
+        cores.forEach((c) => { const s = document.createElement('span'); s.className = 'swatch'; s.style.backgroundColor = c; caixa.appendChild(s); });
+        t.appendChild(caixa);
+      }
       li.append(n, t);
       ol.appendChild(li);
     });
@@ -451,6 +508,34 @@ const CONFIG = {
       location: Evento.enderecoCompleto,
     });
     return 'https://calendar.google.com/calendar/render?' + q.toString();
+  }
+
+
+  /* ------------------------------------------------------------------------
+     Copiar endereço
+     ------------------------------------------------------------------------ */
+  function copiarTexto(texto) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(texto);
+    return new Promise((ok, falha) => {                // plano B para navegadores antigos
+      const ta = document.createElement('textarea');
+      ta.value = texto; ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(ta);
+      ta.select();
+      let copiou = false;
+      try { copiou = document.execCommand('copy'); } catch (e) { copiou = false; }
+      ta.remove();
+      copiou ? ok() : falha(new Error('copy'));
+    });
+  }
+
+  function iniciarEndereco() {
+    $('#btn-copiar').addEventListener('click', () => {
+      copiarTexto(Evento.enderecoCompleto).then(
+        () => toast(CONFIG.textos.avisos.enderecoCopiado),
+        () => toast(CONFIG.textos.avisos.copiarFalhou)
+      );
+    });
   }
 
 
@@ -789,8 +874,10 @@ const CONFIG = {
   function iniciar() {
     renderTextos();
     renderEvento();
+    renderContagem();
     renderManual();
     renderPresentes();
+    iniciarEndereco();
     iniciarFormularios();
     iniciarEnvelope();
   }
