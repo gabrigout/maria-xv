@@ -31,9 +31,9 @@ Um convite pensado para ser **enviado por link no WhatsApp**. O convidado abre n
 
 - **Envelope animado em CSS 3D**: o lacre rachado cai em duas metades, a aba gira, o cartão sobe (~2 s).
 - **Confirmar presença** pelo WhatsApp (`wa.me`) com mensagem pronta, nome e, se permitido, quantidade de pessoas.
-- **Como chegar** (Google Maps) e **adicionar à agenda**: arquivo `.ics` com lembrete 1 dia antes e link do Google Agenda.
+- **Como chegar** pelo Google Maps ou pelo **Waze**, com botão de **copiar endereço**, e **adicionar à agenda**: arquivo `.ics` com lembrete 1 dia antes e link do Google Agenda.
 - **Sugestão de presentes** em grupos, **sugerir música** e **enviar recado**, ambos pelo WhatsApp.
-- **Manual do Convidado** e prazo de confirmação.
+- **Manual do Convidado** (com amostras das cores a evitar), prazo de confirmação e **contagem regressiva** discreta.
 - **Música de fundo** com botão de silenciar (começa só depois do toque, como exigem os navegadores).
 - **Tudo configurável** em um único objeto `CONFIG` no topo de [`assets/js/app.js`](assets/js/app.js).
 
@@ -45,6 +45,7 @@ Um convite pensado para ser **enviado por link no WhatsApp**. O convidado abre n
 | Lacre que quebra | Uma arte SVG usada em duas metades recortadas por um mesmo `clip-path` em zigue-zague; lascas criadas em JS com variáveis CSS (`--dx`, `--dy`, `--r`). |
 | Compatibilidade com iPhones antigos | Sem `aspect-ratio` nem *container queries*: proporção por "truque do padding" e medidas por uma variável CSS (`--env-w`). |
 | Agenda em qualquer fuso | `.ics` (RFC 5545) escrito à mão: horário em UTC, escape de vírgulas e quebras, dobra de linhas em 75 **bytes** UTF-8 sem cortar acentos, `VALARM` de 1 dia. |
+| Contagem certa em qualquer fuso | Os dias são contados entre a data de hoje **no fuso do evento** (UTC-3) e a data da festa, então um celular em outro fuso não erra o dia. Depois da festa, a linha vira um agradecimento. |
 | Mensagens do WhatsApp | Modelos com `{chaves}`; linhas cujo campo ficou vazio somem sozinhas. Trava contra toque duplo e link de reserva se o app não abrir. |
 | Teclado do celular | Janelas ajustadas por `visualViewport` (iOS e Android), campos com fonte ≥ 16 px (evita zoom do iOS) e `:active` habilitado no Safari do iPhone (truque do `touchstart`). |
 | Acessibilidade | Foco devolvido ao botão de origem, `Esc` fecha, `inert` no fundo, alvos ≥ 48 px, `prefers-reduced-motion`, rótulos e contraste. Lighthouse: **Acessibilidade 100 · Boas práticas 100**. |
@@ -85,6 +86,7 @@ const CONFIG = {
   local:  { nome: "Casa das Acácias", rua: "Rua das Flores, 120", bairro: "Jardim Paulista", cidade: "São Paulo/SP" },
   whatsapp: "11999990000",                   // DDD + número
   rsvp: { maxPessoas: 1, prazo: "2027-03-10" },   // 1 = convite individual
+  contagem: { mostrar: true, varios: "faltam {n} dias" },
   // presentes, manual, mensagens do WhatsApp, textos da interface...
 };
 ```
@@ -106,7 +108,7 @@ python3 -m http.server 8000
 
 ## Qualidade
 
-Verificado com Playwright (Chromium) em telas de 320 a 844 px: sem rolagem horizontal, alvos de toque ≥ 48 px, 31 verificações de fluxo (formulários, links do WhatsApp, `.ics`, janelas e tecla `Esc`) e casos de borda (política de segurança ativa, fontes bloqueadas, JavaScript desligado).
+Verificado com Playwright (Chromium) em telas de 320 a 844 px: sem rolagem horizontal, alvos de toque ≥ 48 px, 40 verificações de fluxo (formulários, links do WhatsApp e do Waze, copiar endereço, `.ics`, janelas e tecla `Esc`), a contagem regressiva com datas simuladas (inclui fuso e depois da festa) e casos de borda (política de segurança ativa, fontes bloqueadas, JavaScript desligado).
 
 **Limitações conhecidas:** testado em Chromium emulado, não em iPhone/Safari reais; o download do `.ics` pode variar em navegadores embutidos de apps (o link do Google Agenda serve de alternativa); a música é um *placeholder* original e o Google Fonts é a única dependência externa.
 
