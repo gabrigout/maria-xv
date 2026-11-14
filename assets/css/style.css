@@ -455,9 +455,8 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 .is-open .main { opacity: 1; visibility: visible; transition: opacity 1s ease; }
 
 .hero {
-  min-height: 100vh; min-height: 100svh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: calc(var(--bh) * .6 + var(--safe-t)) var(--side) calc(var(--bh) * .5);
+  padding: calc(var(--bh) * .6 + var(--safe-t)) var(--side) 0;
 }
 /* arco de papelaria: fundo escuro e filete duplo de prata */
 .arch { position: relative; isolation: isolate; width: 100%; max-width: 372px; padding: 78px 20px 34px; text-align: center; }
@@ -490,8 +489,7 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
   color: var(--silver-100); text-shadow: 0 2px 14px rgba(0, 0, 0, .55);
 }
 .name > span { display: block; padding: .06em 0; }
-.name__a { transform: translateX(-.32em); }
-.name__b { transform: translateX(.22em); margin-top: -.18em; }
+.name__b { margin-top: -.18em; }
 
 .hero__date {
   display: inline-flex; flex-direction: column; align-items: center; gap: 2px; margin-top: 12px; padding: 8px 4px;
@@ -520,7 +518,7 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 
 
 /* ---------- 5. DETALHES DA CELEBRAÇÃO ------------------------------------ */
-.details { position: relative; padding: 52px var(--side) 16px; text-align: center; }
+.details { position: relative; padding: 18px var(--side) 8px; text-align: center; }
 .details__div { display: block; width: min(72%, 270px); height: auto; margin: 0 auto 8px; }
 
 /* cartão de papel azul texturizado com cantos de prata */
@@ -597,9 +595,9 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 
 
 /* ---------- 6. AÇÕES (MENU DE BOTÕES) ------------------------------------ */
-.section { padding: 70px var(--side) 8px; }
+.section { padding: 44px var(--side) 8px; }
 .actions__ramo { display: block; width: min(76%, 290px); height: auto; margin: 0 auto 6px; }
-.actions__perolas { display: block; width: 170px; height: auto; margin: 10px auto -6px; }
+.actions__rule { max-width: 330px; margin: 14px auto 0; }
 .section__title { text-align: center; font-size: 2rem; font-weight: 500; font-style: italic; line-height: 1.2; color: var(--silver-100); text-wrap: balance; }
 
 .menu { display: grid; gap: 14px; max-width: 440px; margin: 28px auto 0; }
@@ -671,7 +669,7 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 
 
 /* ---------- 7. MANUAL DO CONVIDADO (cartão azul florido) ---------------- */
-#manual { padding-top: 96px; }
+#manual { padding-top: 72px; }
 .carta {
   position: relative; isolation: isolate; max-width: 440px; margin: 0 auto;
   padding: 90px 22px 54px;
@@ -717,7 +715,7 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 
 
 /* ---------- 8. RODAPÉ E BOTÃO DE MÚSICA ---------------------------------- */
-.footer { position: relative; padding: 90px var(--side) calc(var(--bh) * .82 + 18px); text-align: center; }
+.footer { position: relative; padding: 52px var(--side) calc(var(--bh) * .82 + 18px); text-align: center; }
 .footer::before {
   content: ""; position: absolute; left: 50%; top: 50px; width: 300px; height: 300px; margin-left: -150px; z-index: -1;
   background: radial-gradient(closest-side, rgba(160, 188, 250, .2), transparent);
@@ -993,7 +991,6 @@ body.has-sheet { overflow: hidden; }
 
 /* XV: cada letra com o seu degradê de prata, caindo em escala */
 .hero__xv.letras-on, .intro__xv.letras-on { background: none; -webkit-text-fill-color: currentColor; }
-.letras-on .ch { white-space: pre; }
 .hero__xv .ch, .intro__xv .ch {
   display: inline-block;
   background: linear-gradient(180deg, #ffffff 0%, #dfe5ee 38%, #9aa6ba 54%, #e8edf4 74%, #b8c2d2 100%);
