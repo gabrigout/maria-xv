@@ -315,6 +315,13 @@ const CONFIG = {
     $('#f-street').textContent  = L.rua;
     $('#f-city').textContent    = [L.bairro, L.cidade].filter(Boolean).join(' · ');
     $('#f-dress').textContent   = CONFIG.evento.traje;
+    // linha de data na capa (montada a partir de CONFIG.evento)
+    const hd = $('#h-date');
+    if (hd) {
+      const l1 = document.createElement('span'); l1.textContent = Evento.diaSemana + ' · ' + Evento.dataLonga;
+      const l2 = document.createElement('b');    l2.textContent = Evento.hora;
+      hd.append(l1, l2);
+    }
 
     // Como chegar: busca no Google Maps pelo endereço
     $('#btn-maps').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(Evento.enderecoCompleto);
@@ -699,14 +706,14 @@ const CONFIG = {
       return {
         x: Math.random() * W, y: qualquerAltura ? Math.random() * H * .7 : -20,
         s: 6 + Math.random() * 4.5, vy: .22 + Math.random() * .2, rot: Math.random() * 6.283, vr: (Math.random() - .5) * .012,
-        fase: Math.random() * 6.283, c: cores[Math.floor(Math.random() * cores.length)], i: Math.floor(Math.random() * 6), a: 0,
+        fase: Math.random() * 6.283, c: cores[Math.floor(Math.random() * cores.length)], i: Math.floor(Math.random() * 8), a: 0,
       };
     }
     // tira com 6 florzinhas ilustradas (96 px cada); se não carregar, desenha uma versão simples
     const tira = new Image();
     let tiraOk = false;
     tira.onload = () => { tiraOk = true; if (reduceMotion) desenhar(0); };
-    tira.src = 'assets/img/flores/florzinhas.webp';
+    tira.src = 'assets/img/flores/petalas.webp';
     function florzinha(f) {
       if (tiraOk) {
         ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.rot);

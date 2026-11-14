@@ -30,7 +30,7 @@ Um convite pensado para ser **enviado por link no WhatsApp**. O convidado abre n
 ## Funcionalidades
 
 - **Abertura cinematográfica em CSS 3D**: o ambiente acende, um feixe de luz revela o envelope de cetim, um reflexo percorre o lacre prateado; ao toque, o lacre parte, a aba gira com sombra, o cartão sobe e se aproxima até virar a capa (~3 s, com botão **Pular**).
-- **Direção de arte "Cetim e Prata"**: fundo de cetim azul-marinho com luz prateada, feixe diagonal e partículas lentas em `<canvas>`, ilustrações de hortênsias, rosas e lírios em azul e branco, lacre de cera ilustrado, capa em arco com filete de prata e florzinhas caindo na abertura.
+- **Direção de arte "Cetim e Prata"**: fundo de cetim azul-marinho com luz prateada, feixe diagonal e pétalas e partículas lentas em `<canvas>`, ilustrações de hortênsias, rosas e lírios em azul e branco, lacre de cera ilustrado, capa em arco com filete de prata e florzinhas caindo na abertura.
 - **Confirmar presença** pelo WhatsApp (`wa.me`) com mensagem pronta, nome e, se permitido, quantidade de pessoas.
 - **Como chegar** pelo Google Maps ou pelo **Waze**, com botão de **copiar endereço**, e **adicionar à agenda**: arquivo `.ics` com lembrete 1 dia antes e link do Google Agenda.
 - **Sugestão de presentes** em grupos, **sugerir música** e **enviar recado**, ambos pelo WhatsApp.
@@ -51,7 +51,7 @@ Um convite pensado para ser **enviado por link no WhatsApp**. O convidado abre n
 | Teclado do celular | Janelas ajustadas por `visualViewport` (iOS e Android), campos com fonte ≥ 16 px (evita zoom do iOS) e `:active` habilitado no Safari do iPhone (truque do `touchstart`). |
 | Acessibilidade | Foco devolvido ao botão de origem, `Esc` fecha, `inert` no fundo, alvos ≥ 48 px, `prefers-reduced-motion`, rótulos e contraste. Lighthouse: **Acessibilidade 100 · Boas práticas 100**. |
 | Segurança | Conteúdo sempre via `textContent` (nunca `innerHTML`), `Content-Security-Policy`, `rel="noopener"`, sem *trackers*, `noindex` (convite particular). |
-| Música original | [`tools/make_music.py`](tools/make_music.py) sintetiza a valsa (piano aditivo, piano elétrico FM, cordas, reverb por convolução) e fecha o loop somando a cauda do reverb ao início. Saída determinística. |
+| Música original | [`tools/make_music2.py`](tools/make_music2.py) sintetiza a trilha "emotiva" (piano aditivo, cordas, harpa Karplus-Strong, reverb por convolução) e fecha o loop somando a cauda do reverb ao início. Saída determinística. |
 
 ## Decisões e trade-offs
 
@@ -59,7 +59,7 @@ Medi antes de "otimizar":
 
 - **Fontes sem bloquear a renderização.** Testei carregar o CSS do Google Fonts por JavaScript. Com o Google simulado lento (6 s), a página passou a abrir em ~70 ms em vez de esperar, mas no caso normal o Lighthouse oscilou demais no meu ambiente (a mesma versão ia de 76 a 98) para provar ganho. Como o método padrão tem menos código, mantive o padrão.
 - **Bug achado pelos testes:** o *fade-in* do volume podia calcular um valor levemente negativo; o navegador recusava e o fade parava no meio, deixando a música **muda**. Agora o volume é limitado a 0–1.
-- **Medições de desempenho variam** com a latência do Google Fonts. Por isso o README não cita uma nota de desempenho: o site tem ~140 KB de código, ~650 KB de imagens e a música (~1 MB).
+- **Medições de desempenho variam** com a latência do Google Fonts. Por isso o README não cita uma nota de desempenho: o site tem ~140 KB de código, ~850 KB de imagens (carregadas aos poucos) e a música (~1 MB).
 
 ## Estrutura
 
@@ -69,11 +69,12 @@ Medi antes de "otimizar":
 ├── assets/
 │   ├── css/style.css     visual: variáveis, envelope 3D, lacre, moldura, botões, janelas
 │   ├── js/app.js         CONFIG (dados e textos) + lógica: envelope, música, agenda, WhatsApp, formulários
-│   ├── img/flores/       ilustrações florais (WebP com transparência)
-│   ├── img/fundo/        textura de cetim do fundo
-│   ├── img/              favicon, ícone do iPhone, imagem de prévia do link
+│   ├── img/flores/       ilustrações florais em aquarela (WebP com transparência)
+│   ├── img/ornamentos/   arabescos, divisores e pérolas de prata
+│   ├── img/texturas/     cetim, damasco e papel azul
+│   ├── img/              lacre, favicon, ícone do iPhone, imagem de prévia do link
 │   └── musica.mp3        trilha de fundo (instrumental, gerada por código)
-├── tools/                trilha (make_music2.py), cetim do fundo (make_cetim.py), preparo das flores (prep_flores.py)
+├── tools/                trilha (make_music2.py), recorte de pranchas sem transparência (recortar.py), preparo das flores (prep_flores.py)
 ├── docs/                 imagens deste README
 └── _headers              cabeçalhos de segurança (Netlify)
 ```
