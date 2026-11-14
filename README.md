@@ -59,7 +59,7 @@ Medi antes de "otimizar":
 
 - **Fontes sem bloquear a renderização.** Testei carregar o CSS do Google Fonts por JavaScript. Com o Google simulado lento (6 s), a página passou a abrir em ~70 ms em vez de esperar, mas no caso normal o Lighthouse oscilou demais no meu ambiente (a mesma versão ia de 76 a 98) para provar ganho. Como o método padrão tem menos código, mantive o padrão.
 - **Bug achado pelos testes:** o *fade-in* do volume podia calcular um valor levemente negativo; o navegador recusava e o fade parava no meio, deixando a música **muda**. Agora o volume é limitado a 0–1.
-- **Medições de desempenho variam** com a latência do Google Fonts. Por isso o README não cita uma nota de desempenho: o site tem ~140 KB de código, ~150 KB de imagens e a música (~1 MB).
+- **Medições de desempenho variam** com a latência do Google Fonts. Por isso o README não cita uma nota de desempenho: o site tem ~140 KB de código, ~335 KB de imagens e a música (~1 MB).
 
 ## Estrutura
 
@@ -73,7 +73,7 @@ Medi antes de "otimizar":
 │   ├── img/fundo/        textura de cetim do fundo
 │   ├── img/              favicon, ícone do iPhone, imagem de prévia do link
 │   └── musica.mp3        trilha de fundo (instrumental, gerada por código)
-├── tools/                geradores: trilha (make_music2.py), hortênsias (make_flores.js), cetim (make_cetim.py)
+├── tools/                trilha (make_music2.py), cetim do fundo (make_cetim.py), preparo das flores (prep_flores.py)
 ├── docs/                 imagens deste README
 └── _headers              cabeçalhos de segurança (Netlify)
 ```

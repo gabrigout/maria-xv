@@ -698,11 +698,23 @@ const CONFIG = {
       const cores = ['#2a4fb5', '#4c74d8', '#a9c1ee', '#e9eef7'];
       return {
         x: Math.random() * W, y: qualquerAltura ? Math.random() * H * .7 : -20,
-        s: 5 + Math.random() * 4, vy: .22 + Math.random() * .2, rot: Math.random() * 6.283, vr: (Math.random() - .5) * .012,
-        fase: Math.random() * 6.283, c: cores[Math.floor(Math.random() * cores.length)], a: 0,
+        s: 6 + Math.random() * 4.5, vy: .22 + Math.random() * .2, rot: Math.random() * 6.283, vr: (Math.random() - .5) * .012,
+        fase: Math.random() * 6.283, c: cores[Math.floor(Math.random() * cores.length)], i: Math.floor(Math.random() * 6), a: 0,
       };
     }
+    // tira com 6 florzinhas ilustradas (96 px cada); se não carregar, desenha uma versão simples
+    const tira = new Image();
+    let tiraOk = false;
+    tira.onload = () => { tiraOk = true; if (reduceMotion) desenhar(0); };
+    tira.src = 'assets/img/flores/florzinhas.webp';
     function florzinha(f) {
+      if (tiraOk) {
+        ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.rot);
+        ctx.globalAlpha = f.a * .92;
+        ctx.drawImage(tira, f.i * 96, 0, 96, 96, -f.s * 1.3, -f.s * 1.3, f.s * 2.6, f.s * 2.6);
+        ctx.restore();
+        return;
+      }
       ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.rot);
       ctx.globalAlpha = f.a * .85; ctx.fillStyle = f.c;
       for (let k = 0; k < 4; k++) {
