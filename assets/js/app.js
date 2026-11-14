@@ -806,6 +806,44 @@ const CONFIG = {
   }
 
   /* ------------------------------------------------------------------------
+     Detalhes vivos: flores que desabrocham, molduras que brilham uma vez
+     e flores que andam um pouco mais devagar que o texto ao rolar (profundidade)
+     ------------------------------------------------------------------------ */
+  const Detalhes = {
+    iniciar() {
+      const blooms = $$('.bloom'), lits = $$('.lit');
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        blooms.forEach((el) => el.classList.add('is-in'));
+        return;
+      }
+      const io = new IntersectionObserver((es) => es.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add(e.target.classList.contains('lit') ? 'is-lit' : 'is-in');
+        io.unobserve(e.target);
+      }), { threshold: 0.35 });
+      blooms.concat(lits).forEach((el) => io.observe(el));
+
+      // paralaxe leve: deslocamento proporcional à distância do centro da tela
+      const pxs = $$('[data-px]').map((el) => ({ el, f: parseFloat(el.dataset.px) || 0, pai: el.parentElement }));
+      if (!pxs.length || !(window.CSS && CSS.supports && CSS.supports('translate', '0 1px'))) return;
+      let pendente = false;
+      function aplicar() {
+        pendente = false;
+        const meio = window.innerHeight / 2;
+        pxs.forEach((p) => {
+          const r = p.pai.getBoundingClientRect();
+          if (r.bottom < -200 || r.top > window.innerHeight + 200) return;   // fora da tela: não mexe
+          const d = (r.top + r.height / 2 - meio) * p.f;
+          p.el.style.translate = '0 ' + Math.max(-60, Math.min(60, d)).toFixed(1) + 'px';
+        });
+      }
+      window.addEventListener('scroll', () => { if (!pendente) { pendente = true; requestAnimationFrame(aplicar); } }, { passive: true });
+      aplicar();
+    },
+  };
+
+
+  /* ------------------------------------------------------------------------
      Envelope: toque no lacre → lacre quebra, aba abre, cartão sobe (~2 s)
      A linha do tempo visual está em style.css (seção 2/3); estes tempos
      decidem quando a tela de detalhes entra.
@@ -909,6 +947,7 @@ const CONFIG = {
         main.removeAttribute('aria-hidden');
         window.scrollTo(0, 0);
         Reveal.iniciar();
+        Detalhes.iniciar();
         const h = $('#detalhes-titulo');
         if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
       }, T.sair);

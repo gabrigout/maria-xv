@@ -185,8 +185,8 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 .intro__flor { position: absolute; z-index: 2; width: clamp(190px, 54vw, 300px); height: auto; pointer-events: none; opacity: 0; filter: drop-shadow(0 12px 16px rgba(0, 0, 0, .4)); }
 .intro__flor--tl { top: calc(-3vw + var(--safe-t)); left: -4vw; }
 .intro__flor--bottom { left: 50%; bottom: calc(-2vw + var(--safe-b)); width: min(118vw, 560px); margin-left: calc(min(118vw, 560px) / -2); }
-.intro.is-ready .intro__flor--tl { animation: flor-tl 1.8s .3s var(--ease) forwards; }
-.intro.is-ready .intro__flor--bottom { animation: flor-bottom 1.8s .55s var(--ease) forwards; }
+.intro.is-ready .intro__flor--tl { animation: flor-tl 1.8s .3s var(--ease) forwards, sway 8.5s 2.1s ease-in-out infinite alternate; }
+.intro.is-ready .intro__flor--bottom { animation: flor-bottom 1.8s .55s var(--ease) forwards, sway-soft 10s 2.4s ease-in-out infinite alternate; }
 @keyframes flor-tl { from { opacity: 0; transform: translate(-10%, -10%) scale(.92); } to { opacity: 1; transform: none; } }
 @keyframes flor-bottom { from { opacity: 0; transform: translateY(14%) scale(.94); } to { opacity: 1; transform: none; } }
 .intro.is-opening .intro__flor, .intro.is-skipping .intro__flor { transition: opacity .9s ease .3s; }
@@ -506,7 +506,7 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
   letter-spacing: .16em; text-transform: uppercase; color: var(--silver-100);
   border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft);
 }
-.hero__date b { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; letter-spacing: .08em; line-height: 1.1; color: var(--silver-100); }
+.hero__date b { text-transform: none; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; letter-spacing: .08em; line-height: 1.1; color: var(--silver-100); }
 .invite { margin-top: 10px; display: grid; gap: 8px; }
 .invite span:first-child { font-size: 1.3rem; font-weight: 600; line-height: 1.25; color: var(--silver-100); text-wrap: balance; }
 .invite span:last-child { font-size: 1.14rem; font-style: italic; line-height: 1.3; color: var(--silver-300); }
@@ -890,4 +890,53 @@ body.has-sheet { overflow: hidden; }
   .intro__beam, .btn--primary::before { display: none; }
   .js .reveal { opacity: 1; transform: none; }
   .intro.is-leaving { animation: fade-out .3s linear forwards !important; }
+}
+
+/* ---------- 12. MOVIMENTO DOS DETALHES ----------------------------------- */
+/* Usa as propriedades separadas rotate / translate / scale: somam-se ao transform
+   que cada peça já tem. Em navegadores antigos que não as conhecem, a peça só fica parada. */
+
+/* flores balançando como numa brisa (ângulos pequenos, ciclos longos e diferentes) */
+.sway { animation: sway 8s ease-in-out infinite alternate; }
+.sway--tl  { transform-origin: 0 0;        animation-duration: 8.5s; }
+.sway--tr  { transform-origin: 100% 0;     animation-duration: 9.5s; animation-delay: -3s; }
+.sway--b   { transform-origin: 50% 100%;   animation-name: sway-soft; animation-duration: 10s; }
+.sway--bl  { transform-origin: 0 100%;     animation-duration: 9s; animation-delay: -2s; }
+.sway--br  { transform-origin: 100% 100%;  animation-duration: 10.5s; animation-delay: -5s; }
+.sway--top { transform-origin: 50% 0;      animation-duration: 11s; animation-delay: -4s; }
+.sway--c   { transform-origin: 50% 50%;    animation-name: sway-soft; animation-duration: 12s; }
+@keyframes sway      { from { rotate: -1.6deg; } to { rotate: 1.6deg; } }
+@keyframes sway-soft { from { rotate: -.6deg; }  to { rotate: .6deg; } }
+
+/* flores "desabrochando" quando entram na tela */
+.js .bloom { opacity: 0; scale: .82; transition: opacity 1.2s var(--ease), scale 1.6s var(--ease); }
+.js .bloom.is-in { opacity: .999; scale: 1; }
+.js .paper__corner.bloom.is-in, .js .carta__corner.bloom.is-in { opacity: .9; }
+
+/* brilho prateado que percorre a moldura uma vez, quando a seção aparece */
+.frame-sheen {
+  position: absolute; z-index: 0; pointer-events: none;
+  inset: var(--fs-inset, 9px); padding: 1.6px; border-radius: var(--fs-r, 4px);
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, .95) 50%, transparent 62%) 130% 0 / 300% 100% no-repeat;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0;
+}
+.arch .frame-sheen { --fs-r: 400px 400px 8px 8px; z-index: -1; }
+.paper .frame-sheen { --fs-inset: 8px; --fs-r: 3px; }
+.carta .frame-sheen { --fs-r: 4px; }
+.lit.is-lit .frame-sheen, .is-open .arch .frame-sheen { animation: frame-sheen 2.2s .3s ease-in-out both; }
+.is-open .arch .frame-sheen { animation-delay: 1.4s; }
+@keyframes frame-sheen {
+  0%   { opacity: 0; background-position: 130% 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { opacity: 0; background-position: -30% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sway, .frame-sheen { animation: none !important; }
+  .js .bloom { opacity: 1; scale: 1; }
+  [data-px] { translate: none !important; }
 }
