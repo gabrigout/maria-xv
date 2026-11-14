@@ -706,7 +706,7 @@ const CONFIG = {
       return {
         x: Math.random() * W, y: qualquerAltura ? Math.random() * H * .7 : -20,
         s: 6 + Math.random() * 4.5, vy: .22 + Math.random() * .2, rot: Math.random() * 6.283, vr: (Math.random() - .5) * .012,
-        fase: Math.random() * 6.283, c: cores[Math.floor(Math.random() * cores.length)], i: Math.floor(Math.random() * 8), a: 0,
+        fase: Math.random() * 6.283, c: cores[Math.floor(Math.random() * cores.length)], i: [0, 1, 2, 4, 6, 0, 2, 4, 6, 3][Math.floor(Math.random() * 10)], a: 0,   // poucas brancas
       };
     }
     // tira com 6 florzinhas ilustradas (96 px cada); se não carregar, desenha uma versão simples
@@ -740,7 +740,7 @@ const CONFIG = {
       poeira.forEach((p) => {
         const a = .3 + p.pisca * (.5 + .5 * Math.sin(p.fase + t / 1000 * p.vel * 60));   // cintila devagar (9–26 s)
         ctx.globalAlpha = a;
-        ctx.fillStyle = '#e6ecf7';
+        ctx.fillStyle = '#a9c1ee';
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
         if (p.r > 1.4) {                              // halo discreto nas maiores
           ctx.globalAlpha = a * .18; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 3.2, 0, 6.283); ctx.fill();
