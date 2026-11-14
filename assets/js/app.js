@@ -669,6 +669,123 @@ const CONFIG = {
   };
 
 
+
+  /* ------------------------------------------------------------------------
+     Ambiente: partículas prateadas lentas (e algumas florzinhas na abertura)
+     Um único <canvas>, ~30 quadros por segundo, pausa quando a aba some.
+     ------------------------------------------------------------------------ */
+  const Ambiente = (function () {
+    const cv = $('#dust');
+    const ctx = cv && cv.getContext && cv.getContext('2d');
+    if (!ctx) return { abrir() {} };
+    const fraco = (navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 4) <= 2;
+    const dpr = Math.min(window.devicePixelRatio || 1, fraco ? 1.5 : 2);
+    let W = 0, H = 0, poeira = [], flores = [], rodando = false, ultimo = 0, aberto = false;
+
+    function medir() {
+      W = window.innerWidth; H = window.innerHeight;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function novaPoeira(qualquerAltura) {
+      return {
+        x: Math.random() * W, y: qualquerAltura ? Math.random() * H : H + 10,
+        r: .5 + Math.random() * 1.3, vy: -(.06 + Math.random() * .16), fase: Math.random() * 6.283,
+        amp: .15 + Math.random() * .3, pisca: .25 + Math.random() * .5, vel: .004 + Math.random() * .008,
+      };
+    }
+    function novaFlor(qualquerAltura) {
+      const cores = ['#2a4fb5', '#4c74d8', '#a9c1ee', '#e9eef7'];
+      return {
+        x: Math.random() * W, y: qualquerAltura ? Math.random() * H * .7 : -20,
+        s: 5 + Math.random() * 4, vy: .22 + Math.random() * .2, rot: Math.random() * 6.283, vr: (Math.random() - .5) * .012,
+        fase: Math.random() * 6.283, c: cores[Math.floor(Math.random() * cores.length)], a: 0,
+      };
+    }
+    function florzinha(f) {
+      ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.rot);
+      ctx.globalAlpha = f.a * .85; ctx.fillStyle = f.c;
+      for (let k = 0; k < 4; k++) {
+        ctx.rotate(Math.PI / 2);
+        ctx.beginPath(); ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(f.s * .6, -f.s * .15, f.s * .5, -f.s, 0, -f.s);
+        ctx.bezierCurveTo(-f.s * .5, -f.s, -f.s * .6, -f.s * .15, 0, 0);
+        ctx.fill();
+      }
+      ctx.globalAlpha = f.a; ctx.fillStyle = '#f1f4f8';
+      ctx.beginPath(); ctx.arc(0, 0, f.s * .14, 0, 6.283); ctx.fill();
+      ctx.restore();
+    }
+    function desenhar(t) {
+      ctx.clearRect(0, 0, W, H);
+      poeira.forEach((p) => {
+        const a = .3 + p.pisca * (.5 + .5 * Math.sin(p.fase + t / 1000 * p.vel * 60));   // cintila devagar (9–26 s)
+        ctx.globalAlpha = a;
+        ctx.fillStyle = '#e6ecf7';
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
+        if (p.r > 1.4) {                              // halo discreto nas maiores
+          ctx.globalAlpha = a * .18; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 3.2, 0, 6.283); ctx.fill();
+        }
+      });
+      ctx.globalAlpha = 1;
+      flores.forEach(florzinha);
+    }
+    function passo(t) {
+      if (!rodando) return;
+      requestAnimationFrame(passo);
+      if (t - ultimo < 32) return;                    // ~30 fps bastam para movimento lento
+      const dt = Math.min(3, (t - ultimo) / 16.7 || 1);
+      ultimo = t;
+      poeira.forEach((p, i) => {
+        p.y += p.vy * dt; p.x += Math.sin(p.fase + t / 2400) * p.amp * .2 * dt;
+        if (p.y < -10) poeira[i] = novaPoeira(false);
+      });
+      flores.forEach((f, i) => {
+        f.y += f.vy * dt; f.rot += f.vr * dt; f.x += Math.sin(f.fase + t / 1700) * .35 * dt;
+        f.a = aberto ? Math.max(0, f.a - .02 * dt) : Math.min(1, f.a + .01 * dt);
+        if (f.y > H + 20 && !aberto) flores[i] = novaFlor(false);
+      });
+      if (aberto) flores = flores.filter((f) => f.a > 0);
+      desenhar(t);
+    }
+    function ligar() { if (!rodando && !reduceMotion && !document.hidden) { rodando = true; ultimo = 0; requestAnimationFrame(passo); } }
+    function desligar() { rodando = false; }
+
+    medir();
+    poeira = Array.from({ length: fraco ? 26 : 44 }, () => novaPoeira(true));
+    flores = Array.from({ length: fraco ? 3 : 5 }, () => novaFlor(true));
+    if (reduceMotion) { flores.forEach((f) => { f.a = 1; }); desenhar(0); }
+    else ligar();
+
+    let tmr = 0;
+    window.addEventListener('resize', () => { clearTimeout(tmr); tmr = setTimeout(() => { medir(); if (reduceMotion) desenhar(0); }, 150); });
+    document.addEventListener('visibilitychange', () => (document.hidden ? desligar() : ligar()));
+
+    return {
+      /** depois da abertura: as florzinhas somem e fica só a poeira prateada */
+      abrir() { aberto = true; if (reduceMotion) { flores = []; desenhar(0); } },
+    };
+  })();
+
+
+  /* ------------------------------------------------------------------------
+     Toque nos botões: luz que nasce no ponto tocado
+     ------------------------------------------------------------------------ */
+  function iniciarToques() {
+    document.addEventListener('pointerdown', (e) => {
+      const b = e.target.closest && e.target.closest('.btn');
+      if (!b || reduceMotion) return;
+      const r = b.getBoundingClientRect();
+      b.style.setProperty('--x', (e.clientX - r.left) + 'px');
+      b.style.setProperty('--y', (e.clientY - r.top) + 'px');
+      b.classList.remove('is-rippling');
+      void b.offsetWidth;                              // reinicia a animação
+      b.classList.add('is-rippling');
+      clearTimeout(b._rip);
+      b._rip = setTimeout(() => b.classList.remove('is-rippling'), 650);
+    }, { passive: true });
+  }
+
   /* ------------------------------------------------------------------------
      Envelope: toque no lacre → lacre quebra, aba abre, cartão sobe (~2 s)
      A linha do tempo visual está em style.css (seção 2/3); estes tempos
@@ -681,9 +798,16 @@ const CONFIG = {
     const root = document.documentElement;
     let aberto = false;
 
+    // movimento reduzido: sem viagem do envelope, só uma troca suave de tela
     const T0 = reduceMotion
-      ? { sair: 450,  fim: 800 }
-      : { sair: 2300, fim: 3150 };
+      ? { sair: 60,   fim: 500 }
+      : { sair: 2550, fim: 3400 };
+
+    // AMBIENTAÇÃO: começa quando as fontes estiverem prontas (no máximo ~0,9 s de espera)
+    let pronto = false;
+    const preparar = () => { if (!pronto) { pronto = true; requestAnimationFrame(() => intro.classList.add('is-ready')); } };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(preparar, preparar);
+    setTimeout(preparar, 900);
 
     function quebrarLacre() {
       seal.classList.add('is-breaking');
@@ -736,18 +860,19 @@ const CONFIG = {
           });
           if (vivos) requestAnimationFrame(passo); else ctx.clearRect(0, 0, w, h);
         });
-      }, 1000);
+      }, 1050);
     }
 
     function abrir(rapido) {
       if (aberto) return;
       aberto = true;
+      preparar();
       const T = rapido ? { sair: 200, fim: 650 } : T0;   // "Pular": sem a animação longa
 
       Music.start();                                   // tem que ser aqui, dentro do toque
       if (navigator.vibrate) { try { navigator.vibrate(16); } catch (e) { /* ignora */ } }
 
-      if (rapido) {
+      if (rapido || reduceMotion) {
         intro.classList.add('is-skipping');
       } else {
         quebrarLacre();
@@ -757,6 +882,7 @@ const CONFIG = {
 
       setTimeout(() => {                               // dissolve o envelope e mostra os detalhes
         intro.classList.add('is-leaving');
+        Ambiente.abrir();
         root.classList.add('is-open');
         root.classList.remove('is-locked');
         main.inert = false;
@@ -936,6 +1062,7 @@ const CONFIG = {
     renderPresentes();
     iniciarEndereco();
     iniciarFormularios();
+    iniciarToques();
     iniciarEnvelope();
   }
 

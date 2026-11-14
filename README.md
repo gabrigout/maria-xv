@@ -15,7 +15,7 @@ Sem frameworks, sem build, sem dependências.
 
 </div>
 
-> **TL;DR (EN):** An interactive, mobile-first digital invitation for a 15th-birthday party, built with plain HTML, CSS and JavaScript. A wax-seal envelope opens in CSS 3D; guests RSVP through WhatsApp, add the party to their calendar (hand-written `.ics`), suggest a song, leave a message and read a guest manual. No frameworks, no build step, ~90 KB of code.
+> **TL;DR (EN):** An interactive, mobile-first digital invitation for a 15th-birthday party, built with plain HTML, CSS and JavaScript. A wax-seal envelope opens in CSS 3D; guests RSVP through WhatsApp, add the party to their calendar (hand-written `.ics`), suggest a song, leave a message and read a guest manual. No frameworks, no build step, ~140 KB of code.
 
 ## O que é
 
@@ -29,7 +29,8 @@ Um convite pensado para ser **enviado por link no WhatsApp**. O convidado abre n
 
 ## Funcionalidades
 
-- **Envelope animado em CSS 3D**: o lacre rachado cai em duas metades, a aba gira, o cartão sobe (~2 s).
+- **Abertura cinematográfica em CSS 3D**: o ambiente acende, um feixe de luz revela o envelope de cetim, um reflexo percorre o lacre prateado; ao toque, o lacre parte, a aba gira com sombra, o cartão sobe e se aproxima até virar a capa (~3 s, com botão **Pular**).
+- **Direção de arte "Cetim e Prata"**: fundo de cetim azul-marinho com luz prateada, feixe diagonal e partículas lentas em `<canvas>`, hortênsias azuis, capa em arco com filete de prata e Manual do Convidado em cartão perolado.
 - **Confirmar presença** pelo WhatsApp (`wa.me`) com mensagem pronta, nome e, se permitido, quantidade de pessoas.
 - **Como chegar** pelo Google Maps ou pelo **Waze**, com botão de **copiar endereço**, e **adicionar à agenda**: arquivo `.ics` com lembrete 1 dia antes e link do Google Agenda.
 - **Sugestão de presentes** em grupos, **sugerir música** e **enviar recado**, ambos pelo WhatsApp.
@@ -58,7 +59,7 @@ Medi antes de "otimizar":
 
 - **Fontes sem bloquear a renderização.** Testei carregar o CSS do Google Fonts por JavaScript. Com o Google simulado lento (6 s), a página passou a abrir em ~70 ms em vez de esperar, mas no caso normal o Lighthouse oscilou demais no meu ambiente (a mesma versão ia de 76 a 98) para provar ganho. Como o método padrão tem menos código, mantive o padrão.
 - **Bug achado pelos testes:** o *fade-in* do volume podia calcular um valor levemente negativo; o navegador recusava e o fade parava no meio, deixando a música **muda**. Agora o volume é limitado a 0–1.
-- **Medições de desempenho variam** com a latência do Google Fonts. Por isso o README não cita uma nota de desempenho: o site tem ~90 KB de código e a música (~0,6 MB).
+- **Medições de desempenho variam** com a latência do Google Fonts. Por isso o README não cita uma nota de desempenho: o site tem ~140 KB de código, ~150 KB de imagens e a música (~1 MB).
 
 ## Estrutura
 
@@ -68,9 +69,11 @@ Medi antes de "otimizar":
 ├── assets/
 │   ├── css/style.css     visual: variáveis, envelope 3D, lacre, moldura, botões, janelas
 │   ├── js/app.js         CONFIG (dados e textos) + lógica: envelope, música, agenda, WhatsApp, formulários
+│   ├── img/flores/       hortênsias (WebP com transparência)
+│   ├── img/fundo/        textura de cetim do fundo
 │   ├── img/              favicon, ícone do iPhone, imagem de prévia do link
-│   └── musica.mp3        trilha de fundo (instrumental)
-├── tools/make_music.py   gerador da trilha
+│   └── musica.mp3        trilha de fundo (instrumental, gerada por código)
+├── tools/                geradores: trilha (make_music2.py), hortênsias (make_flores.js), cetim (make_cetim.py)
 ├── docs/                 imagens deste README
 └── _headers              cabeçalhos de segurança (Netlify)
 ```
@@ -114,4 +117,4 @@ Verificado com Playwright (Chromium) em telas de 320 a 844 px: sem rolagem horiz
 
 ## Licença
 
-[MIT](LICENSE). Fontes: Cormorant Garamond e Great Vibes (SIL OFL), servidas pelo Google Fonts.
+[MIT](LICENSE). Fontes: Cormorant Garamond, Pinyon Script e Jost (SIL OFL), servidas pelo Google Fonts.
