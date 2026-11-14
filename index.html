@@ -61,21 +61,13 @@
       <linearGradient id="sat-l" x1="0" y1="0" x2="1" y2=".6"><stop offset="0" stop-color="#0a1a4a"/><stop offset=".5" stop-color="#1d3d8a"/><stop offset="1" stop-color="#081538"/></linearGradient>
       <linearGradient id="sat-r" x1="1" y1="0" x2="0" y2=".6"><stop offset="0" stop-color="#0a1a4a"/><stop offset=".5" stop-color="#1b3a86"/><stop offset="1" stop-color="#081538"/></linearGradient>
       <linearGradient id="sat-b" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#071238"/><stop offset=".5" stop-color="#193680"/><stop offset="1" stop-color="#0a1a4a"/></linearGradient>
-      <!-- Forro do envelope: cachos de florzinhas de hortênsia prateadas, em tamanhos variados -->
-      <symbol id="floret" viewBox="-10 -10 20 20">
-        <path d="M0-1.2C1.8-4.6 5.4-4 4.6-1.2 4 .6 1.8 0 0-1.2ZM1.2 0C4.6 1.8 4 5.4 1.2 4.6-.6 4 0 1.8 1.2 0ZM0 1.2C-1.8 4.6-5.4 4-4.6 1.2-4-.6-1.8 0 0 1.2ZM-1.2 0C-4.6-1.8-4-5.4-1.2-4.6.6-4 0-1.8-1.2 0Z"/>
-        <circle r=".9"/>
-      </symbol>
-      <pattern id="p-lining" width="54" height="54" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
-        <g fill="rgba(197,206,219,.16)">
-          <use href="#floret" x="4" y="4" width="20" height="20"/>
-          <use href="#floret" x="18" y="10" width="13" height="13" opacity=".8"/>
-          <use href="#floret" x="9" y="19" width="11" height="11" opacity=".7"/>
-          <use href="#floret" x="33" y="30" width="16" height="16"/>
-          <use href="#floret" x="44" y="38" width="9" height="9" opacity=".7"/>
-          <use href="#floret" x="28" y="44" width="8" height="8" opacity=".6"/>
-          <circle cx="27" cy="22" r=".9"/><circle cx="47" cy="12" r=".7"/><circle cx="10" cy="40" r=".8"/>
-        </g>
+      <!-- Relevo de damasco no cetim do envelope -->
+      <pattern id="p-damasco" width="150" height="150" patternUnits="userSpaceOnUse">
+        <image href="assets/img/texturas/damasco.webp" width="150" height="150"/>
+      </pattern>
+      <!-- Forro do envelope: estampa de hortênsias ilustrada (assets/img/texturas/forro.webp) -->
+      <pattern id="p-lining" width="130" height="130" patternUnits="userSpaceOnUse">
+        <image href="assets/img/texturas/forro.webp" width="130" height="130"/>
       </pattern>
       <!-- Filete de prata (bordas do envelope) -->
       <linearGradient id="g-foil" x1="0" y1="0" x2="1" y2="1">
@@ -156,11 +148,14 @@
     <div class="intro__beam" aria-hidden="true"></div>
     <img class="intro__flor intro__flor--tl sway sway--tl" src="assets/img/flores/canto-lirio-rosa.webp" alt="" width="480" height="424" decoding="async" fetchpriority="high">
     <img class="intro__flor intro__flor--bottom sway sway--b" src="assets/img/flores/guirlanda-longa.webp" alt="" width="900" height="251" decoding="async">
+    <img class="intro__orn intro__orn--tr" src="assets/img/ornamentos/canto-safira-2.webp" alt="" width="220" height="173" decoding="async">
+    <img class="intro__vinha sway sway--top" src="assets/img/flores/aq-vinha.webp" alt="" width="170" height="786" decoding="async">
     <div class="intro__glow" aria-hidden="true"></div>
     <canvas class="burst" id="burst" aria-hidden="true"></canvas>
     <p class="intro__title" aria-hidden="true">
       <span class="intro__xv" data-cfg="pessoa.xv"></span>
       <span class="intro__name script" data-cfg="pessoa.nome"></span>
+      <img class="intro__div" src="assets/img/ornamentos/divisor-safira.webp" alt="" width="279" height="106" decoding="async">
     </p>
     <button class="intro__skip" id="skip" type="button" data-cfg="textos.pular"></button>
     <div class="intro__stage">
@@ -178,6 +173,7 @@
         <div class="env__flap" aria-hidden="true">
           <svg class="flap__face flap__face--out" viewBox="0 0 400 180" focusable="false">
             <path d="M0 0H400L200 180Z" fill="url(#sat-flap)"/>
+            <path d="M0 0H400L200 180Z" fill="url(#p-damasco)" opacity=".5" style="mix-blend-mode:screen"/>
             <path d="M0 0H400L200 180Z" fill="url(#sat-sheen)"/>
             <path d="M16 4L200 166L384 4" fill="none" stroke="url(#g-foil)" stroke-opacity=".55" stroke-width="1" vector-effect="non-scaling-stroke"/>
             <path d="M0 0H400L200 180Z" fill="none" stroke="url(#g-foil)" stroke-opacity=".8" stroke-width="1.3" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
@@ -192,8 +188,7 @@
         <!-- cartão que sobe de dentro do envelope -->
         <div class="env__card" aria-hidden="true">
           <div class="cover">
-            <span class="cover__arch"></span>
-            <span class="cover__xv" data-cfg="pessoa.xv"></span>
+            <img class="cover__mono" src="assets/img/ornamentos/monograma.webp" alt="" width="420" height="415" decoding="async">
             <span class="cover__name script" data-cfg="pessoa.nome"></span>
             <span class="cover__rule"></span>
             <span class="cover__sub" data-cfg="textos.capaConvite"></span>
@@ -205,6 +200,7 @@
           <path d="M0 0L200 152L0 294Z" fill="url(#sat-l)"/>
           <path d="M400 0L200 152L400 294Z" fill="url(#sat-r)"/>
           <path d="M0 294L200 138L400 294Z" fill="url(#sat-b)"/>
+          <path d="M0 0L200 152L0 294ZM400 0L200 152L400 294ZM0 294L200 138L400 294Z" fill="url(#p-damasco)" opacity=".5" style="mix-blend-mode:screen"/>
           <path d="M0 294L200 138L400 294Z" fill="url(#sat-sheen)" opacity=".7"/>
           <path d="M0 0L200 152L0 294M400 0L200 152L400 294" fill="none" stroke="#c5cedb" stroke-opacity=".12" stroke-width="1" vector-effect="non-scaling-stroke"/>
           <path d="M0 294L200 138L400 294" fill="none" stroke="url(#g-foil)" stroke-opacity=".5" stroke-width="1" vector-effect="non-scaling-stroke"/>
@@ -230,6 +226,7 @@
       </div>
 
       <p class="intro__hint" data-cfg="textos.abrir"></p>
+      <img class="intro__fio" src="assets/img/ornamentos/divisor-prata-fino.webp" alt="" width="520" height="68" decoding="async">
     </div>
   </section>
 
@@ -248,18 +245,15 @@
     <!-- ---------- CAPA: arco prateado com o nome ---------- -->
     <section id="capa" class="hero" aria-label="Convite de XV anos">
       <div class="arch">
-        <span class="arch__frame" aria-hidden="true"></span>
-        <span class="frame-sheen" aria-hidden="true"></span>
-        <img class="arch__flor arch__flor--tl sway sway--tl" data-px=".10" src="assets/img/flores/aq-canto-vertical.webp" alt="" width="380" height="638" decoding="async" fetchpriority="low">
-        <img class="arch__flor arch__flor--tr sway sway--tr" data-px=".08" src="assets/img/flores/canto-hortensia.webp" alt="" width="340" height="432" decoding="async" fetchpriority="low">
-        <img class="arch__garland sway sway--b" data-px="-.06" src="assets/img/flores/guirlanda-longa.webp" alt="" width="900" height="251" decoding="async" fetchpriority="low">
+        <span class="arch__panel" aria-hidden="true"></span>
+        <img class="arch__img" src="assets/img/flores/moldura-capa.webp" alt="" width="640" height="960" decoding="async">
+        <span class="arch__sheen" aria-hidden="true"></span>
         <div class="arch__in">
           <p class="hero__xv" aria-hidden="true" data-cfg="pessoa.xv"></p>
           <p class="name script">
             <span class="name__a" data-cfg="pessoa.primeiroNome"></span>
             <span class="name__b" data-cfg="pessoa.sobrenome"></span>
           </p>
-          <img class="hero__ramo" src="assets/img/flores/aq-divisor.webp" alt="" width="620" height="91" decoding="async" fetchpriority="low">
           <p class="invite"><span data-cfg="textos.convite.chamada"></span><span data-cfg="textos.convite.frase"></span></p>
           <p class="hero__date" id="h-date"></p>
         </div>
@@ -276,12 +270,12 @@
       <img class="details__vinha sway sway--top bloom" data-px=".14" src="assets/img/flores/aq-vinha.webp" alt="" width="170" height="785" loading="lazy" decoding="async">
       <img class="details__buque reveal reveal--flor" src="assets/img/ornamentos/divisor-flores.webp" alt="" width="560" height="169" loading="lazy" decoding="async">
       <h1 class="eyebrow reveal" id="detalhes-titulo" data-cfg="textos.detalhesTitulo"></h1>
-      <svg class="divider reveal reveal--line" aria-hidden="true"><use href="#ornament-divider"/></svg>
+      <img class="divider-img reveal" src="assets/img/ornamentos/divisor-safira.webp" alt="" width="279" height="106" loading="lazy" decoding="async">
 
       <div class="paper reveal lit">
         <span class="frame-sheen" aria-hidden="true"></span>
-        <img class="paper__corner paper__corner--tl bloom" src="assets/img/ornamentos/canto-prata.webp" alt="" width="300" height="221" loading="lazy" decoding="async">
-        <img class="paper__corner paper__corner--br bloom" src="assets/img/ornamentos/canto-prata.webp" alt="" width="300" height="221" loading="lazy" decoding="async">
+        <img class="paper__corner paper__corner--tl bloom" src="assets/img/ornamentos/canto-safira.webp" alt="" width="197" height="170" loading="lazy" decoding="async">
+        <img class="paper__corner paper__corner--br bloom" src="assets/img/ornamentos/canto-safira.webp" alt="" width="197" height="170" loading="lazy" decoding="async">
       <dl class="facts">
         <div class="fact fact--date">
           <dt data-cfg="textos.rotuloData"></dt>
@@ -316,7 +310,7 @@
     <section id="menu" class="section actions" aria-labelledby="menu-titulo">
       <img class="actions__ramo reveal reveal--flor" src="assets/img/flores/aq-guirlanda.webp" alt="" width="720" height="228" loading="lazy" decoding="async">
       <h2 class="section__title reveal" id="menu-titulo" data-cfg="textos.menuTitulo"></h2>
-      <img class="actions__perolas reveal" src="assets/img/ornamentos/perolas.webp" alt="" width="460" height="59" loading="lazy" decoding="async">
+      <img class="actions__perolas reveal" src="assets/img/ornamentos/colar-safira.webp" alt="" width="254" height="143" loading="lazy" decoding="async">
 
       <nav class="menu" aria-label="Opções do convite">
         <button class="btn btn--primary reveal" type="button" data-open="rsvp">
@@ -370,9 +364,10 @@
         <span class="frame-sheen" aria-hidden="true"></span>
         <img class="carta__flor sway sway--tl bloom" data-px=".10" src="assets/img/flores/canto-lirio-rosa.webp" alt="" width="480" height="424" loading="lazy" decoding="async">
         <img class="carta__rosas sway sway--br bloom" data-px="-.08" src="assets/img/flores/aq-ramo-baixo.webp" alt="" width="440" height="260" loading="lazy" decoding="async">
-        <img class="carta__corner carta__corner--tr bloom" src="assets/img/ornamentos/canto-prata.webp" alt="" width="300" height="221" loading="lazy" decoding="async">
-        <img class="carta__corner carta__corner--bl bloom" src="assets/img/ornamentos/canto-prata.webp" alt="" width="300" height="221" loading="lazy" decoding="async">
+        <img class="carta__corner carta__corner--tr bloom" src="assets/img/ornamentos/canto-safira-2.webp" alt="" width="220" height="173" loading="lazy" decoding="async">
+        <img class="carta__corner carta__corner--bl bloom" src="assets/img/ornamentos/canto-safira-2.webp" alt="" width="220" height="173" loading="lazy" decoding="async">
 
+        <img class="carta__laco" src="assets/img/ornamentos/laco-safira.webp" alt="" width="343" height="206" loading="lazy" decoding="async">
         <h2 class="manual-title script" id="manual-titulo" data-cfg="textos.manualTitulo"></h2>
         <img class="carta__divisor" src="assets/img/ornamentos/divisor-prata.webp" alt="" width="560" height="126" loading="lazy" decoding="async">
         <ol class="manual" id="manual-lista"></ol>
@@ -381,10 +376,7 @@
 
     <!-- ---------- RODAPÉ ---------- -->
     <footer class="footer">
-      <div class="footer__crest reveal reveal--flor" aria-hidden="true">
-        <img class="footer__wreath sway sway--c" src="assets/img/flores/guirlanda.webp" alt="" width="480" height="479" loading="lazy" decoding="async">
-        <img class="footer__seal" src="assets/img/lacre.webp" alt="" width="300" height="316" loading="lazy" decoding="async">
-      </div>
+      <img class="footer__mono reveal reveal--flor sway sway--c" src="assets/img/ornamentos/monograma.webp" alt="" width="420" height="415" loading="lazy" decoding="async">
       <img class="footer__divisor reveal reveal--line" src="assets/img/ornamentos/divisor-prata-fino.webp" alt="" width="520" height="68" loading="lazy" decoding="async">
       <p class="footer__line reveal" data-cfg="textos.rodape"></p>
       <p class="footer__name script reveal" data-cfg="pessoa.nome"></p>

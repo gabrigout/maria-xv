@@ -13,6 +13,25 @@ k = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
 im = Image.open(src).convert('RGBA')
 a = np.asarray(im).astype(np.float32)
 rgb, al = a[..., :3] / 255, a[..., 3:]
+PROFUNDO = len(sys.argv) > 4 and sys.argv[4] == 'profundo'
+if PROFUNDO:
+    # nada de branco nem azul-bebê: tons claros viram azul royal saturado, mantendo o sombreado
+    mx, mn = rgb.max(-1, keepdims=True), rgb.min(-1, keepdims=True)
+    sat = (mx - mn) / np.maximum(mx, 1e-4)
+    lum = (rgb @ np.array([.3, .55, .15]))[..., None]
+    azulado = (rgb[..., 2:3] > rgb[..., 0:1] + .05).astype(np.float32)
+    claro = np.clip((lum - .32) / .3, 0, 1)
+    peso = claro * np.clip(np.clip(1 - sat / .5, 0, 1) + azulado * .75, 0, 1)
+    royal = np.array([.19, .31, .82])
+    alvo = np.clip(royal * (.3 + .82 * lum), 0, 1)
+    rgb = rgb * (1 - peso * .9) + alvo * peso * .9
+    # folhas verde-acinzentadas puxam para azul-ardósia
+    verde = np.clip((rgb[..., 1:2] - rgb[..., 2:3]) / .06 + .5, 0, 1) * (1 - peso)
+    ardosia = np.concatenate([lum * .58, lum * .72, lum * 1.02], -1)
+    rgb = rgb * (1 - verde * .55) + ardosia * verde * .55
+    out = np.concatenate([np.clip(rgb * .95, 0, 1) * 255, al], -1).astype(np.uint8)
+    Image.fromarray(out, 'RGBA').save(dst, 'WEBP', quality=82, method=6)
+    sys.exit()
 mx, mn = rgb.max(-1, keepdims=True), rgb.min(-1, keepdims=True)
 sat = (mx - mn) / np.maximum(mx, 1e-4)
 # quanto o pixel é "branco": claro e pouco saturado

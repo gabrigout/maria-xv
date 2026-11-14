@@ -318,9 +318,10 @@ const CONFIG = {
     // linha de data na capa (montada a partir de CONFIG.evento)
     const hd = $('#h-date');
     if (hd) {
-      const l1 = document.createElement('span'); l1.textContent = Evento.diaSemana + ' · ' + Evento.dataLonga;
-      const l2 = document.createElement('b');    l2.textContent = Evento.hora;
-      hd.append(l1, l2);
+      const l1 = document.createElement('span'); l1.textContent = Evento.diaSemana;
+      const l2 = document.createElement('span'); l2.textContent = Evento.dataLonga;
+      const l3 = document.createElement('b');    l3.textContent = Evento.hora;
+      hd.append(l1, l2, l3);
     }
 
     // Como chegar: busca no Google Maps pelo endereço

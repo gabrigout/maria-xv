@@ -21,7 +21,35 @@ img = Image.open(src).convert('RGB')
 p = np.asarray(img).astype(np.float32)
 H, W, _ = p.shape
 
-if modo == 'claro':
+if modo == 'xadrez':
+    # "xadrez" pintado (dois cinzas claros) com sombras: fundo = claro, sem cor e PLANO (gradiente baixo);
+    # a prata tem o mesmo tom, mas é cheia de relevo, então o gradiente a separa
+    from scipy.ndimage import gaussian_filter, sobel
+    cinza = p.mean(axis=2)
+    gs = gaussian_filter(cinza, 1.0)
+    grad = np.hypot(sobel(gs, 0), sobel(gs, 1)) / 8
+    sat = p.max(axis=2) - p.min(axis=2)
+    plano = (sat < 14) & (p.min(axis=2) >= 178) & (grad < 9)
+    lab, _ = ndimage.label(plano)
+    bordas = np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))
+    fundo = np.isin(lab, bordas[bordas > 0])
+    # miolo das molduras: áreas planas grandes, mesmo cercadas
+    tam = ndimage.sum(np.ones_like(cinza), lab, np.arange(1, lab.max() + 1))
+    grandes = np.arange(1, lab.max() + 1)[tam > 1500]
+    fundo |= np.isin(lab, grandes)
+    fundo = ndimage.binary_closing(fundo, iterations=2) | fundo     # fecha as linhas entre quadrados
+    # sombra pintada sob as peças: cinza claro e macio; cresce o fundo para dentro dela a partir da borda
+    sombra = (sat < 18) & (p.min(axis=2) >= 170) & (grad < 22)
+    fundo = ndimage.binary_propagation(fundo, mask=sombra | fundo)
+    frente = ~fundo
+    frente = ndimage.binary_opening(frente, iterations=2)
+    frente = ndimage.binary_erosion(frente, iterations=2)          # tira o contorno claro da sombra pintada
+    alfa = ndimage.gaussian_filter(frente.astype(np.float32), .8) * 255
+    papel = np.full_like(p, 245)
+    a = np.clip(alfa / 255.0, 1e-3, 1)[..., None]
+    borda = (alfa > 0) & (alfa < 250)
+    cor = np.where(borda[..., None], np.clip((p - (1 - a) * papel) / a, 0, 255), p)
+elif modo == 'claro':
     # cor local do papel: mediana larga da imagem (acompanha o xadrez/grão sem pegar as flores)
     papel = np.asarray(img.filter(ImageFilter.MaxFilter(9)).filter(ImageFilter.GaussianBlur(6))).astype(np.float32)
     papel = np.maximum(papel, 225)
