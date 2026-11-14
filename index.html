@@ -146,10 +146,12 @@
   <section id="intro" class="intro" aria-label="Convite fechado">
     <div class="intro__veil" aria-hidden="true"></div>
     <div class="intro__beam" aria-hidden="true"></div>
-    <img class="intro__flor intro__flor--tl sway sway--tl" src="assets/img/flores/canto-lirio-rosa.webp" alt="" width="480" height="424" decoding="async" fetchpriority="high">
-    <img class="intro__flor intro__flor--bottom sway sway--b" src="assets/img/flores/guirlanda-longa.webp" alt="" width="900" height="251" decoding="async">
-    <img class="intro__orn intro__orn--tr" src="assets/img/ornamentos/canto-safira-2.webp" alt="" width="220" height="173" decoding="async">
-    <img class="intro__vinha sway sway--top" src="assets/img/flores/aq-vinha.webp" alt="" width="170" height="786" decoding="async">
+    <div class="ff" aria-hidden="true">
+      <span class="ff__vine ff__vine--l"></span>
+      <span class="ff__vine ff__vine--r"></span>
+      <img class="ff__top" src="assets/img/flores/faixa-cima.webp" alt="" width="960" height="422" decoding="async" fetchpriority="high">
+      <img class="ff__bot" src="assets/img/flores/faixa-baixo.webp" alt="" width="960" height="422" decoding="async">
+    </div>
     <div class="intro__glow" aria-hidden="true"></div>
     <canvas class="burst" id="burst" aria-hidden="true"></canvas>
     <p class="intro__title" aria-hidden="true">
@@ -208,11 +210,8 @@
         </svg>
         <span class="env__sheen" aria-hidden="true"></span>
 
-        <!-- nome "endereçado" no envelope -->
-        <p class="env__name script" aria-hidden="true" data-cfg="pessoa.nome"></p>
-
-        <!-- arranjo de hortênsias preso ao lacre -->
-        <img class="env__bouquet" src="assets/img/flores/arranjo.webp" alt="" width="520" height="549" decoding="async">
+        <!-- coroa de flores em volta do lacre -->
+        <img class="env__bouquet" src="assets/img/flores/arranjo-lacre.webp" alt="" width="560" height="556" decoding="async">
 
         <!-- LACRE: dois pedaços que se separam quando o convite é aberto -->
         <button class="seal" id="seal" type="button" aria-label="Abrir o convite">
@@ -236,6 +235,15 @@
        ===================================================================== -->
   <main id="main" class="main" inert aria-hidden="true">
 
+    <!-- moldura floral: faixa de cima, faixa de baixo e vinhas que ligam as duas (cobre a página inteira) -->
+    <div class="ff" aria-hidden="true">
+      <span class="ff__vine ff__vine--l"></span>
+      <span class="ff__vine ff__vine--r"></span>
+      <img class="ff__top" src="assets/img/flores/faixa-cima.webp" alt="" width="960" height="422" decoding="async">
+      <img class="ff__bot bloom" src="assets/img/flores/faixa-baixo.webp" alt="" width="960" height="422" decoding="async" loading="lazy">
+    </div>
+
+
     <!-- Botão de música (fixo no canto) -->
     <button class="sound" id="sound" type="button" aria-label="Silenciar música">
       <svg class="ico ico--on" aria-hidden="true"><use href="#i-sound"/></svg>
@@ -246,14 +254,15 @@
     <section id="capa" class="hero" aria-label="Convite de XV anos">
       <div class="arch">
         <span class="arch__panel" aria-hidden="true"></span>
-        <img class="arch__img" src="assets/img/flores/moldura-capa.webp" alt="" width="640" height="960" decoding="async">
-        <span class="arch__sheen" aria-hidden="true"></span>
+        <span class="arch__frame" aria-hidden="true"></span>
+        <span class="frame-sheen" aria-hidden="true"></span>
         <div class="arch__in">
           <p class="hero__xv" aria-hidden="true" data-cfg="pessoa.xv"></p>
           <p class="name script">
             <span class="name__a" data-cfg="pessoa.primeiroNome"></span>
             <span class="name__b" data-cfg="pessoa.sobrenome"></span>
           </p>
+          <img class="hero__div" src="assets/img/flores/divisor.webp" alt="" width="840" height="150" decoding="async">
           <p class="invite"><span data-cfg="textos.convite.chamada"></span><span data-cfg="textos.convite.frase"></span></p>
           <p class="hero__date" id="h-date"></p>
         </div>
@@ -267,8 +276,7 @@
 
     <!-- ---------- DETALHES DA CELEBRAÇÃO ---------- -->
     <section id="detalhes" class="details" aria-labelledby="detalhes-titulo">
-      <img class="details__vinha sway sway--top bloom" data-px=".14" src="assets/img/flores/aq-vinha.webp" alt="" width="170" height="785" loading="lazy" decoding="async">
-      <img class="details__buque reveal reveal--flor" src="assets/img/ornamentos/divisor-flores.webp" alt="" width="560" height="169" loading="lazy" decoding="async">
+      <img class="details__div reveal reveal--flor" src="assets/img/flores/divisor.webp" alt="" width="840" height="150" loading="lazy" decoding="async">
       <h1 class="eyebrow reveal" id="detalhes-titulo" data-cfg="textos.detalhesTitulo"></h1>
       <img class="divider-img reveal" src="assets/img/ornamentos/divisor-safira.webp" alt="" width="279" height="106" loading="lazy" decoding="async">
 
@@ -302,13 +310,12 @@
           </dd>
         </div>
       </dl>
-      <img class="paper__ramo sway sway--bl bloom" data-px="-.08" src="assets/img/flores/aq-ramo-baixo.webp" alt="" width="440" height="260" loading="lazy" decoding="async">
       </div>
     </section>
 
     <!-- ---------- MENU DE BOTÕES ---------- -->
     <section id="menu" class="section actions" aria-labelledby="menu-titulo">
-      <img class="actions__ramo reveal reveal--flor" src="assets/img/flores/aq-guirlanda.webp" alt="" width="720" height="228" loading="lazy" decoding="async">
+      <img class="actions__ramo reveal reveal--flor" src="assets/img/flores/divisor.webp" alt="" width="840" height="150" loading="lazy" decoding="async">
       <h2 class="section__title reveal" id="menu-titulo" data-cfg="textos.menuTitulo"></h2>
       <img class="actions__perolas reveal" src="assets/img/ornamentos/colar-safira.webp" alt="" width="254" height="143" loading="lazy" decoding="async">
 
@@ -362,14 +369,12 @@
     <section id="manual" class="section" aria-labelledby="manual-titulo">
       <article class="carta reveal lit">
         <span class="frame-sheen" aria-hidden="true"></span>
-        <img class="carta__flor sway sway--tl bloom" data-px=".10" src="assets/img/flores/canto-lirio-rosa.webp" alt="" width="480" height="424" loading="lazy" decoding="async">
-        <img class="carta__rosas sway sway--br bloom" data-px="-.08" src="assets/img/flores/aq-ramo-baixo.webp" alt="" width="440" height="260" loading="lazy" decoding="async">
         <img class="carta__corner carta__corner--tr bloom" src="assets/img/ornamentos/canto-safira-2.webp" alt="" width="220" height="173" loading="lazy" decoding="async">
         <img class="carta__corner carta__corner--bl bloom" src="assets/img/ornamentos/canto-safira-2.webp" alt="" width="220" height="173" loading="lazy" decoding="async">
 
         <img class="carta__laco" src="assets/img/ornamentos/laco-safira.webp" alt="" width="343" height="206" loading="lazy" decoding="async">
         <h2 class="manual-title script" id="manual-titulo" data-cfg="textos.manualTitulo"></h2>
-        <img class="carta__divisor" src="assets/img/ornamentos/divisor-prata.webp" alt="" width="560" height="126" loading="lazy" decoding="async">
+        <img class="carta__divisor" src="assets/img/flores/divisor.webp" alt="" width="840" height="150" loading="lazy" decoding="async">
         <ol class="manual" id="manual-lista"></ol>
       </article>
     </section>

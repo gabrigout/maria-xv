@@ -30,7 +30,7 @@ Um convite pensado para ser **enviado por link no WhatsApp**. O convidado abre n
 ## Funcionalidades
 
 - **Abertura cinematográfica em CSS 3D**: o ambiente acende, um feixe de luz revela o envelope de cetim, um reflexo percorre o lacre prateado; ao toque, o lacre parte, a aba gira com sombra, o cartão sobe e se aproxima até virar a capa (~3 s, com botão **Pular**).
-- **Direção de arte "Cetim e Prata"**: fundo de cetim azul-marinho com luz prateada, feixe diagonal e pétalas e partículas lentas em `<canvas>`, ilustrações de hortênsias, rosas e lírios em azul-escuro, lacre de cera prateado, capa em moldura floral de prata, monograma MF, forro do envelope estampado e pétalas caindo na abertura; flores que balançam, desabrocham e têm profundidade ao rolar.
+- **Direção de arte "Cetim e Prata"**: fundo de cetim azul-marinho com luz prateada, feixe diagonal e pétalas e partículas lentas em `<canvas>`, moldura floral em azul-escuro (faixa de cima, faixa de baixo e vinhas laterais que se repetem na vertical e emendam nas duas), lacre de cera prateado, capa em arco, monograma MF, forro do envelope estampado e pétalas caindo na abertura.
 - **Confirmar presença** pelo WhatsApp (`wa.me`) com mensagem pronta, nome e, se permitido, quantidade de pessoas.
 - **Como chegar** pelo Google Maps ou pelo **Waze**, com botão de **copiar endereço**, e **adicionar à agenda**: arquivo `.ics` com lembrete 1 dia antes e link do Google Agenda.
 - **Sugestão de presentes** em grupos, **sugerir música** e **enviar recado**, ambos pelo WhatsApp.
@@ -69,12 +69,12 @@ Medi antes de "otimizar":
 ├── assets/
 │   ├── css/style.css     visual: variáveis, envelope 3D, lacre, moldura, botões, janelas
 │   ├── js/app.js         CONFIG (dados e textos) + lógica: envelope, música, agenda, WhatsApp, formulários
-│   ├── img/flores/       ilustrações florais em aquarela (WebP com transparência)
+│   ├── img/flores/       moldura floral: faixas de cima e de baixo, vinhas laterais, coroa do lacre, divisor e pétalas (WebP com transparência)
 │   ├── img/ornamentos/   monograma MF, laço, cantos, divisores e colar com safiras (prata)
 │   ├── img/texturas/     cetim, damasco, papel com relevo floral e forro do envelope
 │   ├── img/              lacre, favicon, ícone do iPhone, imagem de prévia do link
 │   └── musica.mp3        trilha de fundo (instrumental, gerada por código)
-├── tools/                trilha (make_music2.py), recorte de pranchas (recortar.py), dourado→prata (prata.py), tom azul (tom_azul.py)
+├── tools/                trilha (make_music2.py), preparo das flores (prep_flores.py), recorte de pranchas (recortar.py), dourado→prata (prata.py)
 ├── docs/                 imagens deste README
 └── _headers              cabeçalhos de segurança (Netlify)
 ```

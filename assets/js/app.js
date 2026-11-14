@@ -687,7 +687,7 @@ const CONFIG = {
     const ctx = cv && cv.getContext && cv.getContext('2d');
     if (!ctx) return { abrir() {} };
     const fraco = (navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 4) <= 2;
-    const dpr = Math.min(window.devicePixelRatio || 1, fraco ? 1.5 : 2);
+    const dpr = 1;                                    // pontinhos: resolução 1x basta e poupa a GPU
     let W = 0, H = 0, poeira = [], flores = [], rodando = false, ultimo = 0, aberto = false;
 
     function medir() {
@@ -707,7 +707,7 @@ const CONFIG = {
       return {
         x: Math.random() * W, y: qualquerAltura ? Math.random() * H * .7 : -20,
         s: 6 + Math.random() * 4.5, vy: .22 + Math.random() * .2, rot: Math.random() * 6.283, vr: (Math.random() - .5) * .012,
-        fase: Math.random() * 6.283, c: cores[Math.floor(Math.random() * cores.length)], i: [0, 1, 2, 4, 6, 0, 2, 4, 6, 3][Math.floor(Math.random() * 10)], a: 0,   // poucas brancas
+        fase: Math.random() * 6.283, c: cores[Math.floor(Math.random() * cores.length)], i: Math.floor(Math.random() * 8), a: 0,
       };
     }
     // tira com 6 florzinhas ilustradas (96 px cada); se não carregar, desenha uma versão simples
