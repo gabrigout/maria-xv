@@ -685,7 +685,7 @@ const CONFIG = {
   const Ambiente = (function () {
     const cv = $('#dust');
     const ctx = cv && cv.getContext && cv.getContext('2d');
-    if (!ctx) return { abrir() {} };
+    if (!ctx) return { abrir() {}, chuva() {} };
     const fraco = (navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 4) <= 2;
     const dpr = 1;                                    // pontinhos: resolução 1x basta e poupa a GPU
     let W = 0, H = 0, poeira = [], flores = [], rodando = false, ultimo = 0, aberto = false;
@@ -781,9 +781,46 @@ const CONFIG = {
     window.addEventListener('resize', () => { clearTimeout(tmr); tmr = setTimeout(() => { medir(); if (reduceMotion) desenhar(0); }, 150); });
     document.addEventListener('visibilitychange', () => (document.hidden ? desligar() : ligar()));
 
+    /** Chuva de pétalas por cima da página logo depois da abertura (~5 s, depois some). */
+    function chuva() {
+      if (reduceMotion) return;
+      const c = document.createElement('canvas');
+      const x = c.getContext && c.getContext('2d');
+      if (!x) return;
+      c.className = 'chuva'; c.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(c);
+      const d = Math.min(window.devicePixelRatio || 1, 2);
+      const L = window.innerWidth, A = window.innerHeight;
+      c.width = L * d; c.height = A * d; x.scale(d, d);
+      const ps = Array.from({ length: fraco ? 22 : 40 }, () => ({
+        x: Math.random() * L, y: -30 - Math.random() * A * .9, s: 9 + Math.random() * 11,
+        vy: 1.3 + Math.random() * 1.6, r: Math.random() * 6.28, vr: (Math.random() - .5) * .06,
+        f: Math.random() * 6.28, i: Math.floor(Math.random() * 8),
+      }));
+      const t0 = performance.now();
+      requestAnimationFrame(function passo(t) {
+        const idade = (t - t0) / 1000;
+        x.clearRect(0, 0, L, A);
+        let vivos = 0;
+        const sumir = Math.max(0, Math.min(1, (6 - idade) / 1.5));      // some suave entre 4,5 e 6 s
+        ps.forEach((p) => {
+          p.y += p.vy; p.x += Math.sin(p.f + t / 900) * .8; p.r += p.vr;
+          if (p.y > A + 30) return;
+          vivos++;
+          if (!tiraOk) return;
+          x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.scale(Math.cos(p.f + t / 600), 1);
+          x.globalAlpha = .95 * sumir;
+          x.drawImage(tira, p.i * 96, 0, 96, 96, -p.s, -p.s, p.s * 2, p.s * 2);
+          x.restore();
+        });
+        if (vivos && sumir > 0) requestAnimationFrame(passo); else c.remove();
+      });
+    }
+
     return {
       /** depois da abertura: as florzinhas somem e fica só a poeira prateada */
       abrir() { aberto = true; if (reduceMotion) { flores = []; desenhar(0); } },
+      chuva,
     };
   })();
 
@@ -806,6 +843,39 @@ const CONFIG = {
     }, { passive: true });
   }
 
+
+  /* ------------------------------------------------------------------------
+     Letras que surgem aos poucos: cada caractere vira um <span class="ch">.
+     data-letras="atraso,passo" (ms). O texto inteiro fica para leitores de tela.
+     ------------------------------------------------------------------------ */
+  const Letras = {
+    preparar() {
+      $$('[data-letras]').forEach((el) => {
+        const txt = el.textContent;
+        if (!txt.trim()) return;
+        const [d0, passo] = (el.dataset.letras || '0,60').split(',').map(Number);
+        const sr = document.createElement('span');
+        sr.className = 'sr-only'; sr.textContent = txt;
+        const vis = document.createElement('span');
+        vis.setAttribute('aria-hidden', 'true');
+        let i = 0;
+        for (const ch of txt) {
+          const c = document.createElement('span');
+          c.className = ch === ' ' ? 'ch sp' : 'ch';
+          c.textContent = ch;
+          if (ch !== ' ') c.style.setProperty('--i', i++);
+          vis.appendChild(c);
+        }
+        el.textContent = '';
+        el.append(sr, vis);
+        el.style.setProperty('--d0', d0 + 'ms');
+        el.style.setProperty('--passo', passo + 'ms');
+        el.classList.add('letras-on');
+      });
+    },
+    tocar(raiz) { $$('.letras-on', raiz).forEach((el) => el.classList.add('is-play')); },
+  };
+
   /* ------------------------------------------------------------------------
      Detalhes vivos: flores que desabrocham, molduras que brilham uma vez
      e flores que andam um pouco mais devagar que o texto ao rolar (profundidade)
@@ -813,16 +883,19 @@ const CONFIG = {
   const Detalhes = {
     iniciar() {
       const blooms = $$('.bloom'), lits = $$('.lit');
+      const titulos = $$('.letras-on').filter((el) => !el.closest('#intro, #capa'));
       if (reduceMotion || !('IntersectionObserver' in window)) {
         blooms.forEach((el) => el.classList.add('is-in'));
+        titulos.forEach((el) => el.classList.add('is-play'));
         return;
       }
       const io = new IntersectionObserver((es) => es.forEach((e) => {
         if (!e.isIntersecting) return;
-        e.target.classList.add(e.target.classList.contains('lit') ? 'is-lit' : 'is-in');
+        const t = e.target;
+        t.classList.add(t.classList.contains('lit') ? 'is-lit' : t.classList.contains('letras-on') ? 'is-play' : 'is-in');
         io.unobserve(e.target);
       }), { threshold: 0.35 });
-      blooms.concat(lits).forEach((el) => io.observe(el));
+      blooms.concat(lits, titulos).forEach((el) => io.observe(el));
 
       // paralaxe leve: deslocamento proporcional à distância do centro da tela
       const pxs = $$('[data-px]').map((el) => ({ el, f: parseFloat(el.dataset.px) || 0, pai: el.parentElement }));
@@ -863,7 +936,7 @@ const CONFIG = {
 
     // AMBIENTAÇÃO: começa quando as fontes estiverem prontas (no máximo ~0,9 s de espera)
     let pronto = false;
-    const preparar = () => { if (!pronto) { pronto = true; requestAnimationFrame(() => intro.classList.add('is-ready')); } };
+    const preparar = () => { if (!pronto) { pronto = true; requestAnimationFrame(() => { intro.classList.add('is-ready'); Letras.tocar(intro); }); } };
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(preparar, preparar);
     setTimeout(preparar, 900);
 
@@ -887,7 +960,7 @@ const CONFIG = {
       }
     }
 
-    /** Chuva de brilhos que sobe do envelope quando a aba abre (poucos pontos; menos ainda em celular fraco). */
+    /** Ao partir o lacre: pétalas explodem em leque e caem girando; depois, brilhos sobem do envelope. */
     function brilhos() {
       if (reduceMotion) return;
       const cv = $('#burst');
@@ -897,28 +970,59 @@ const CONFIG = {
       const w = intro.clientWidth, h = intro.clientHeight;
       cv.width = w * dpr; cv.height = h * dpr;
       ctx.scale(dpr, dpr);
-      const r = $('#envelope').getBoundingClientRect();
+      const env = $('#envelope').getBoundingClientRect();
+      const sl = $('#seal').getBoundingClientRect();
+      const cx = sl.left + sl.width / 2, cy = sl.top + sl.height / 2;
       const fraco = (navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 4) <= 2;
+      const tira = new Image();
+      tira.src = 'assets/img/flores/petalas.webp';
       const cores = ['#ffffff', '#dfe5ee', '#9fb8f0'];
-      const ps = Array.from({ length: fraco ? 26 : 56 }, () => {
+      const ps = [];
+      // pétalas: leque para cima e para os lados
+      for (let k = 0; k < (fraco ? 16 : 28); k++) {
+        const a = -Math.PI / 2 + (Math.random() - 0.5) * 2.6, v = 4 + Math.random() * 6;
+        ps.push({ t: 'p', ini: Math.random() * 6, x: cx, y: cy, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.5,
+                  s: 10 + Math.random() * 12, r: Math.random() * 6.28, vr: (Math.random() - .5) * .3, f: Math.random() * 6.28,
+                  i: Math.floor(Math.random() * 8), vida: 0, max: 85 + Math.random() * 40 });
+      }
+      // faíscas do lacre
+      for (let k = 0; k < (fraco ? 14 : 26); k++) {
+        const a = Math.random() * 6.28, v = 2 + Math.random() * 5;
+        ps.push({ t: 'c', ini: 0, x: cx, y: cy, vx: Math.cos(a) * v, vy: Math.sin(a) * v, s: 1 + Math.random() * 2, vida: 0, max: 30 + Math.random() * 25, c: '#ffffff' });
+      }
+      // brilhos que sobem quando a aba abre
+      for (let k = 0; k < (fraco ? 24 : 50); k++) {
         const a = -Math.PI / 2 + (Math.random() - 0.5) * 1.5, v = 2.2 + Math.random() * 4.2;
-        return { x: r.left + r.width * (0.25 + Math.random() * 0.5), y: r.top + r.height * 0.3, vx: Math.cos(a) * v, vy: Math.sin(a) * v,
-                 s: 1 + Math.random() * 2.2, vida: 0, max: 60 + Math.random() * 50, c: cores[Math.floor(Math.random() * 3)] };
-      });
-      setTimeout(() => {                               // começa quando a aba já está levantando
-        requestAnimationFrame(function passo() {
-          ctx.clearRect(0, 0, w, h);
-          let vivos = 0;
-          ps.forEach((p) => {
-            if (p.vida > p.max) return;
-            vivos++; p.vida++; p.vy += 0.05; p.x += p.vx; p.y += p.vy; p.vx *= 0.992;
-            ctx.globalAlpha = Math.max(0, 1 - p.vida / p.max);
-            ctx.fillStyle = p.c;
+        ps.push({ t: 'c', ini: 62 + Math.random() * 10, x: env.left + env.width * (0.25 + Math.random() * 0.5), y: env.top + env.height * 0.3,
+                  vx: Math.cos(a) * v, vy: Math.sin(a) * v, s: 1 + Math.random() * 2.2, vida: 0, max: 60 + Math.random() * 50, c: cores[Math.floor(Math.random() * 3)] });
+      }
+      let quadro = 0;
+      requestAnimationFrame(function passo() {
+        ctx.clearRect(0, 0, w, h);
+        quadro++;
+        let vivos = 0;
+        ps.forEach((p) => {
+          if (quadro < p.ini) { vivos++; return; }
+          if (p.vida > p.max) return;
+          vivos++; p.vida++;
+          const alfa = Math.max(0, 1 - Math.pow(p.vida / p.max, 2));
+          if (p.t === 'p') {
+            p.vy += 0.16; p.vx *= 0.975; p.vy *= 0.985; p.x += p.vx + Math.sin(p.f + p.vida / 9) * .6; p.y += p.vy; p.r += p.vr;
+            if (!tira.complete) return;
+            ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r);
+            ctx.scale(Math.cos(p.f + p.vida / 7), 1);                // vira como uma pétala de verdade
+            ctx.globalAlpha = alfa;
+            ctx.drawImage(tira, p.i * 96, 0, 96, 96, -p.s, -p.s, p.s * 2, p.s * 2);
+            ctx.restore();
+          } else {
+            p.vy += 0.05; p.x += p.vx; p.y += p.vy; p.vx *= 0.99;
+            ctx.globalAlpha = alfa; ctx.fillStyle = p.c;
             ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 6.283); ctx.fill();
-          });
-          if (vivos) requestAnimationFrame(passo); else ctx.clearRect(0, 0, w, h);
+          }
         });
-      }, 1050);
+        ctx.globalAlpha = 1;
+        if (vivos) requestAnimationFrame(passo); else ctx.clearRect(0, 0, w, h);
+      });
     }
 
     function abrir(rapido) {
@@ -949,6 +1053,8 @@ const CONFIG = {
         window.scrollTo(0, 0);
         Reveal.iniciar();
         Detalhes.iniciar();
+        Letras.tocar($('#capa'));
+        if (!rapido) Ambiente.chuva();
         const h = $('#detalhes-titulo');
         if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
       }, T.sair);
@@ -1122,6 +1228,7 @@ const CONFIG = {
     iniciarEndereco();
     iniciarFormularios();
     iniciarToques();
+    Letras.preparar();
     iniciarEnvelope();
   }
 

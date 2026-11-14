@@ -153,10 +153,11 @@
       <img class="ff__bot" src="assets/img/flores/faixa-baixo.webp" alt="" width="960" height="422" decoding="async">
     </div>
     <div class="intro__glow" aria-hidden="true"></div>
+    <div class="intro__flash" aria-hidden="true"></div>
     <canvas class="burst" id="burst" aria-hidden="true"></canvas>
     <p class="intro__title" aria-hidden="true">
-      <span class="intro__xv" data-cfg="pessoa.xv"></span>
-      <span class="intro__name script" data-cfg="pessoa.nome"></span>
+      <span class="intro__xv" data-cfg="pessoa.xv" data-letras="900,220"></span>
+      <span class="intro__name script" data-cfg="pessoa.nome" data-letras="1250,65"></span>
       <img class="intro__div" src="assets/img/ornamentos/divisor-safira.webp" alt="" width="279" height="106" decoding="async">
     </p>
     <button class="intro__skip" id="skip" type="button" data-cfg="textos.pular"></button>
@@ -221,6 +222,7 @@
           <span class="seal__half seal__half--l" aria-hidden="true"><img src="assets/img/lacre.webp" alt="" width="300" height="316"></span>
           <span class="seal__half seal__half--r" aria-hidden="true"><img src="assets/img/lacre.webp" alt="" width="300" height="316"></span>
           <span class="seal__shards" id="shards" aria-hidden="true"></span>
+          <span class="glint" style="--x:30%;--y:28%;--d:2.6s" aria-hidden="true"></span><span class="glint" style="--x:72%;--y:70%;--d:5.1s" aria-hidden="true"></span>
         </button>
       </div>
 
@@ -256,11 +258,12 @@
         <span class="arch__panel" aria-hidden="true"></span>
         <span class="arch__frame" aria-hidden="true"></span>
         <span class="frame-sheen" aria-hidden="true"></span>
+        <span class="glint" style="--x:50%;--y:0%;--d:1.8s" aria-hidden="true"></span><span class="glint" style="--x:0%;--y:62%;--d:3.4s" aria-hidden="true"></span><span class="glint" style="--x:100%;--y:40%;--d:4.6s" aria-hidden="true"></span><span class="glint" style="--x:100%;--y:100%;--d:6.2s" aria-hidden="true"></span>
         <div class="arch__in">
-          <p class="hero__xv" aria-hidden="true" data-cfg="pessoa.xv"></p>
+          <p class="hero__xv" aria-hidden="true" data-cfg="pessoa.xv" data-letras="250,240"></p>
           <p class="name script">
-            <span class="name__a" data-cfg="pessoa.primeiroNome"></span>
-            <span class="name__b" data-cfg="pessoa.sobrenome"></span>
+            <span class="name__a" data-cfg="pessoa.primeiroNome" data-letras="750,85"></span>
+            <span class="name__b" data-cfg="pessoa.sobrenome" data-letras="1250,85"></span>
           </p>
           <img class="hero__div" src="assets/img/flores/divisor.webp" alt="" width="840" height="150" decoding="async">
           <p class="invite"><span data-cfg="textos.convite.chamada"></span><span data-cfg="textos.convite.frase"></span></p>
@@ -277,10 +280,11 @@
     <!-- ---------- DETALHES DA CELEBRAÇÃO ---------- -->
     <section id="detalhes" class="details" aria-labelledby="detalhes-titulo">
       <img class="details__div reveal reveal--flor" src="assets/img/flores/divisor.webp" alt="" width="840" height="150" loading="lazy" decoding="async">
-      <h1 class="eyebrow reveal" id="detalhes-titulo" data-cfg="textos.detalhesTitulo"></h1>
+      <h1 class="eyebrow reveal" id="detalhes-titulo" data-cfg="textos.detalhesTitulo" data-letras="150,35"></h1>
       <img class="divider-img reveal" src="assets/img/ornamentos/divisor-safira.webp" alt="" width="279" height="106" loading="lazy" decoding="async">
 
       <div class="paper reveal lit">
+        <span class="glint" style="--x:26px;--y:24px;--d:.4s" aria-hidden="true"></span><span class="glint" style="--x:calc(100% - 26px);--y:24px;--d:2.2s" aria-hidden="true"></span><span class="glint" style="--x:26px;--y:calc(100% - 24px);--d:3.6s" aria-hidden="true"></span><span class="glint" style="--x:calc(100% - 26px);--y:calc(100% - 24px);--d:5s" aria-hidden="true"></span>
         <span class="frame-sheen" aria-hidden="true"></span>
         <img class="paper__corner paper__corner--tl bloom" src="assets/img/ornamentos/canto-safira.webp" alt="" width="197" height="170" loading="lazy" decoding="async">
         <img class="paper__corner paper__corner--tr bloom" src="assets/img/ornamentos/canto-safira.webp" alt="" width="197" height="170" loading="lazy" decoding="async">
@@ -318,7 +322,7 @@
     <!-- ---------- MENU DE BOTÕES ---------- -->
     <section id="menu" class="section actions" aria-labelledby="menu-titulo">
       <img class="actions__ramo reveal reveal--flor" src="assets/img/flores/divisor.webp" alt="" width="840" height="150" loading="lazy" decoding="async">
-      <h2 class="section__title reveal" id="menu-titulo" data-cfg="textos.menuTitulo"></h2>
+      <h2 class="section__title reveal" id="menu-titulo" data-cfg="textos.menuTitulo" data-letras="150,40"></h2>
       <img class="actions__perolas reveal" src="assets/img/ornamentos/colar-safira.webp" alt="" width="254" height="143" loading="lazy" decoding="async">
 
       <nav class="menu" aria-label="Opções do convite">
@@ -370,6 +374,7 @@
     <!-- ---------- MANUAL DO CONVIDADO (cartão azul com flores) ---------- -->
     <section id="manual" class="section" aria-labelledby="manual-titulo">
       <article class="carta reveal lit">
+        <span class="glint" style="--x:28px;--y:26px;--d:1s" aria-hidden="true"></span><span class="glint" style="--x:calc(100% - 28px);--y:26px;--d:2.8s" aria-hidden="true"></span><span class="glint" style="--x:28px;--y:calc(100% - 26px);--d:4.2s" aria-hidden="true"></span><span class="glint" style="--x:calc(100% - 28px);--y:calc(100% - 26px);--d:5.6s" aria-hidden="true"></span>
         <span class="frame-sheen" aria-hidden="true"></span>
         <img class="carta__corner carta__corner--tl bloom" src="assets/img/ornamentos/canto-safira-2.webp" alt="" width="220" height="173" loading="lazy" decoding="async">
         <img class="carta__corner carta__corner--tr bloom" src="assets/img/ornamentos/canto-safira-2.webp" alt="" width="220" height="173" loading="lazy" decoding="async">
@@ -377,7 +382,7 @@
         <img class="carta__corner carta__corner--br bloom" src="assets/img/ornamentos/canto-safira-2.webp" alt="" width="220" height="173" loading="lazy" decoding="async">
 
         <img class="carta__laco" src="assets/img/ornamentos/laco-safira.webp" alt="" width="343" height="206" loading="lazy" decoding="async">
-        <h2 class="manual-title script" id="manual-titulo" data-cfg="textos.manualTitulo"></h2>
+        <h2 class="manual-title script" id="manual-titulo" data-cfg="textos.manualTitulo" data-letras="300,70"></h2>
         <img class="carta__divisor" src="assets/img/flores/divisor.webp" alt="" width="840" height="150" loading="lazy" decoding="async">
         <ol class="manual" id="manual-lista"></ol>
       </article>
@@ -388,7 +393,7 @@
       <img class="footer__mono reveal reveal--flor sway sway--c" src="assets/img/ornamentos/monograma.webp" alt="" width="420" height="415" loading="lazy" decoding="async">
       <div class="footer__rule reveal reveal--line" aria-hidden="true"><img src="assets/img/ornamentos/divisor-prata-fino.webp" alt="" width="520" height="68" loading="lazy" decoding="async"></div>
       <p class="footer__line reveal" data-cfg="textos.rodape"></p>
-      <p class="footer__name script reveal" data-cfg="pessoa.nome"></p>
+      <p class="footer__name script reveal" data-cfg="pessoa.nome" data-letras="300,90"></p>
     </footer>
   </main>
 
