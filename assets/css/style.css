@@ -1008,6 +1008,10 @@ body.has-sheet { overflow: hidden; }
            filter: drop-shadow(0 0 6px rgba(4, 10, 28, .9)) drop-shadow(0 0 2px rgba(4, 10, 28, 1)); }
 .pf__orn--top { top: 0; }
 .pf__orn--bot { top: 100%; }
+/* toques laterais: o mesmo ornamento, na vertical e menor, no meio das laterais */
+.pf__orn--l, .pf__orn--r { top: 50%; width: 110px; }
+.pf__orn--l { left: 0; transform: translate(-50%, -50%) rotate(90deg); }
+.pf__orn--r { left: 100%; transform: translate(-50%, -50%) rotate(90deg); }
 .intro.is-ready .pf { animation: pf-in 1.6s .3s var(--ease) forwards; }
 @keyframes pf-in { from { opacity: 0; transform: scale(1.03); } to { opacity: 1; transform: none; } }
 .intro.is-opening .pf, .intro.is-skipping .pf { transition: opacity .8s ease .4s; opacity: 0; animation: none; }
