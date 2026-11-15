@@ -47,7 +47,7 @@
   --mw: min(100vw, 520px);
   --bh: calc(var(--mw) * .4396);          /* altura de uma faixa (960 × 422) */
   --vw: calc(var(--mw) * .205);           /* largura de uma vinha */
-  --side: calc(var(--mw) * .095);         /* respiro lateral do conteúdo */
+  --side: 18px;                           /* respiro lateral do conteúdo */
   --ease-io: cubic-bezier(.65, .05, .3, 1);
 
   --safe-t: env(safe-area-inset-top, 0px);
@@ -191,7 +191,7 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 /* hortênsias nos cantos */
 
 /* ornamentos de prata e vinha lateral */
-.intro__div { display: block; width: 130px; height: auto; margin-top: 2px; }
+.intro__div { display: block; width: 150px; height: 14px; margin-top: 6px; color: var(--silver-300); }
 .intro__fio { display: block; width: 150px; height: auto; margin-top: 10px; opacity: 0; }
 .intro.is-ready .intro__fio { animation: fade-in .9s 2.4s ease forwards; }
 .intro.is-opening .intro__fio, .intro.is-skipping .intro__fio { opacity: 0 !important; animation: none; transition: opacity .3s ease; }
@@ -518,25 +518,16 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 
 
 /* ---------- 5. DETALHES DA CELEBRAÇÃO ------------------------------------ */
-.details { position: relative; padding: 18px var(--side) 8px; text-align: center; }
-.details__div { display: block; width: min(72%, 270px); height: auto; margin: 0 auto 8px; }
+.details { position: relative; padding: 36px var(--side) 8px; text-align: center; }
 
-/* cartão de papel azul texturizado com cantos de prata */
+/* cartão em vidro azul: liso, filete de prata e brilho suave (sem cantos rebuscados) */
 .paper {
-  position: relative; max-width: 420px; margin: 10px auto 0;
-  padding: 30px 16px 74px;
-  background:
-    linear-gradient(180deg, rgba(8, 18, 54, .72), rgba(4, 10, 32, .86)),
-    var(--navy-800) url(../img/texturas/papel-azul.webp) center / cover;
-  border-radius: 6px;
-  box-shadow: 0 40px 70px -36px rgba(0, 0, 0, .95), inset 0 1px 0 rgba(255, 255, 255, .08);
+  position: relative; max-width: 420px; margin: 6px auto 0;
+  padding: 26px 16px 24px;
+  background: linear-gradient(160deg, rgba(36, 66, 150, .42), rgba(8, 18, 54, .78) 55%, rgba(14, 30, 84, .6));
+  border: 1px solid rgba(169, 193, 238, .35); border-radius: 22px;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .95), 0 0 40px rgba(60, 100, 210, .18), inset 0 1px 0 rgba(255, 255, 255, .12);
 }
-.paper::before { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(150, 168, 205, .34); border-radius: 3px; pointer-events: none; }
-.paper__corner { position: absolute; z-index: 0; width: 64px; height: auto; opacity: .9; pointer-events: none; }
-.paper__corner--tl { top: 6px; left: 6px; transform: scaleX(-1); }
-.paper__corner--tr { top: 6px; right: 6px; }
-.paper__corner--bl { bottom: 6px; left: 6px; transform: scale(-1, -1); }
-.paper__corner--br { bottom: 6px; right: 6px; transform: scaleY(-1); }
 .paper .facts { position: relative; z-index: 1; }
 /* luz azulada atrás da data */
 .details::before {
@@ -548,8 +539,7 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
   font-family: var(--sans); font-size: .8rem; font-weight: 500; line-height: 1.5;
   letter-spacing: .34em; text-indent: .34em; text-transform: uppercase; color: var(--silver-200);
 }
-.divider { display: block; width: 190px; height: 14px; margin: 18px auto 10px; color: var(--silver-400); }
-.divider-img { display: block; width: 170px; height: auto; margin: 8px auto 4px; }
+.divider { display: block; width: 170px; height: 14px; margin: 14px auto 12px; color: var(--silver-300); }
 
 .facts { display: grid; grid-template-columns: 1fr 1fr; max-width: 420px; margin: 0 auto; }
 .fact { position: relative; padding: 22px 8px; }
@@ -596,7 +586,6 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 
 /* ---------- 6. AÇÕES (MENU DE BOTÕES) ------------------------------------ */
 .section { padding: 44px var(--side) 8px; }
-.actions__ramo { display: block; width: min(76%, 290px); height: auto; margin: 0 auto 6px; }
 .actions__rule { max-width: 330px; margin: 14px auto 0; }
 .section__title { text-align: center; font-size: 2rem; font-weight: 500; font-style: italic; line-height: 1.2; color: var(--silver-100); text-wrap: balance; }
 
@@ -669,37 +658,16 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 
 
 /* ---------- 7. MANUAL DO CONVIDADO (cartão azul florido) ---------------- */
-#manual { padding-top: 72px; }
+#manual { padding-top: 48px; }
 .carta {
   position: relative; isolation: isolate; max-width: 440px; margin: 0 auto;
-  padding: 90px 22px 54px;
+  padding: 40px 22px 26px;
   text-align: center;
-  background:
-    radial-gradient(90% 34% at 50% 0%, rgba(120, 156, 236, .3), transparent 72%),
-    radial-gradient(70% 30% at 0% 100%, rgba(42, 79, 181, .25), transparent 70%),
-    linear-gradient(180deg, rgba(8, 20, 60, .8), rgba(4, 10, 32, .9)),
-    var(--navy-800) url(../img/texturas/damasco.webp) center / cover;
-  border-radius: 8px;
-  box-shadow: 0 50px 80px -40px rgba(0, 0, 0, .95), 0 0 60px rgba(42, 79, 181, .2);
+  background: linear-gradient(160deg, rgba(36, 66, 150, .42), rgba(8, 18, 54, .8) 55%, rgba(14, 30, 84, .6));
+  border: 1px solid rgba(169, 193, 238, .35); border-radius: 26px;
+  box-shadow: 0 40px 70px -36px rgba(0, 0, 0, .95), 0 0 50px rgba(60, 100, 210, .2), inset 0 1px 0 rgba(255, 255, 255, .12);
 }
-/* moldura dupla de prata */
-.carta::before, .carta::after { content: ""; position: absolute; pointer-events: none; z-index: -1; border-radius: 4px; }
-.carta::before {
-  inset: 9px; padding: 1.6px;
-  background: var(--foil-aco);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-}
-.carta::after { inset: 16px; border: 1px solid rgba(150, 168, 205, .3); }
-.carta__corner { position: absolute; z-index: 1; width: 66px; height: auto; opacity: .9; pointer-events: none; }
-.carta__corner--tl { top: 8px; left: 8px; }
-.carta__corner--tr { top: 8px; right: 8px; transform: scaleX(-1); }
-.carta__corner--bl { bottom: 8px; left: 8px; transform: scaleY(-1); }
-.carta__corner--br { bottom: 8px; right: 8px; transform: scale(-1, -1); }
-.carta__laco { position: absolute; z-index: 3; left: 50%; top: -34px; width: 132px; height: auto; transform: translateX(-50%); filter: drop-shadow(0 8px 10px rgba(0, 0, 0, .5)); pointer-events: none; }
-.carta__divisor { display: block; position: relative; z-index: 2; width: 220px; height: auto; margin: 8px auto 4px; }
-
+.carta .frame-sheen { --fs-inset: -1px; --fs-r: 26px; }
 .manual-title { position: relative; z-index: 2; font-size: clamp(2.7rem, 13vw, 3.3rem); line-height: 1.15; color: var(--silver-100); text-shadow: 0 2px 14px rgba(0, 0, 0, .5); }
 .carta .divider { margin: 10px auto 4px; color: var(--silver-400); }
 
@@ -715,12 +683,12 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 
 
 /* ---------- 8. RODAPÉ E BOTÃO DE MÚSICA ---------------------------------- */
-.footer { position: relative; padding: 52px var(--side) calc(var(--bh) * .82 + 18px); text-align: center; }
+.footer { position: relative; padding: 52px var(--side) calc(40px + var(--safe-b)); text-align: center; }
 .footer::before {
   content: ""; position: absolute; left: 50%; top: 50px; width: 300px; height: 300px; margin-left: -150px; z-index: -1;
   background: radial-gradient(closest-side, rgba(160, 188, 250, .2), transparent);
 }
-.footer__mono { display: block; width: 210px; height: auto; margin: 0 auto 18px; filter: drop-shadow(0 12px 16px rgba(0, 0, 0, .5)); }
+.footer__mono { display: block; width: 150px; height: auto; margin: 0 auto 18px; filter: drop-shadow(0 12px 16px rgba(0, 0, 0, .5)); }
 /* divisor do rodapé: ornamento no meio e filetes de prata até as laterais */
 .footer__rule { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 380px; margin: 0 auto 16px; }
 .footer__rule::before, .footer__rule::after { content: ""; flex: 1; height: 1px; }
@@ -902,7 +870,6 @@ body.has-sheet { overflow: hidden; }
 /* flores "desabrochando" quando entram na tela */
 .js .bloom { opacity: 0; scale: .82; transition: opacity 1.2s var(--ease), scale 1.6s var(--ease); }
 .js .bloom.is-in { opacity: .999; scale: 1; }
-.js .paper__corner.bloom.is-in, .js .carta__corner.bloom.is-in { opacity: .9; }
 
 /* brilho prateado que percorre a moldura uma vez, quando a seção aparece */
 .frame-sheen {
@@ -914,8 +881,7 @@ body.has-sheet { overflow: hidden; }
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
   opacity: 0;
 }
-.paper .frame-sheen { --fs-inset: 8px; --fs-r: 3px; }
-.carta .frame-sheen { --fs-r: 4px; }
+.paper .frame-sheen { --fs-inset: -1px; --fs-r: 22px; }
 .lit.is-lit .frame-sheen { animation: frame-sheen 2.2s .3s ease-in-out both; }
 @keyframes frame-sheen {
   0%   { opacity: 0; background-position: 130% 0; }
@@ -940,7 +906,7 @@ body.has-sheet { overflow: hidden; }
 .ff__top { top: 0; transform-origin: 50% 0; }
 .ff__bot { bottom: 0; transform-origin: 50% 100%; }
 .ff__vine {
-  position: absolute; width: var(--vw);
+  display: none; position: absolute; width: var(--vw);
   top: calc(var(--bh) * .84); bottom: calc(var(--bh) * .84);
   background-repeat: repeat-y; background-position: 50% 0; background-size: 100% auto;
 }
@@ -963,8 +929,6 @@ body.has-sheet { overflow: hidden; }
 
 /* página: a faixa de cima chega com a capa; a de baixo desabrocha quando aparece */
 .js .is-open .ff__top { animation: ff-top-in 1.6s .4s var(--ease) both; }
-.js .is-open .main > .ff .ff__vine--l { animation: ff-l-in 1.6s .4s var(--ease) both; }
-.js .is-open .main > .ff .ff__vine--r { animation: ff-r-in 1.6s .4s var(--ease) both; }
 .js .ff__bot.bloom { transform-origin: 50% 100%; }
 
 @media (max-height: 520px) { .intro .ff { display: none; } }

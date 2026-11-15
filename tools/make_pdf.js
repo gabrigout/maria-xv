@@ -63,7 +63,6 @@ const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 </style></head><body>
 <a class="todo" href="${URL_SITE}">
   <div class="bg"></div><div class="luz"></div>
-  <div class="vine l"></div><div class="vine r"></div>
   <img class="top" src="${img('flores/faixa-cima.webp')}"><img class="bot" src="${img('flores/faixa-baixo.webp')}">
   <div class="c"><div class="arco"></div><div class="in">
     <img class="mono" src="${img('ornamentos/monograma.webp')}">
