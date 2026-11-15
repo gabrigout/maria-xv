@@ -191,14 +191,14 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 /* hortênsias nos cantos */
 
 /* ornamentos de prata e vinha lateral */
-.intro__div { display: block; width: 150px; height: 14px; margin-top: 6px; color: var(--silver-300); }
-.intro__fio { display: block; width: 150px; height: auto; margin-top: 10px; opacity: 0; }
+.intro .intro__rule { width: min(78vw, 320px); margin: 6px auto 0; }
+.intro .intro__fio { width: min(78vw, 320px); margin: 12px auto 0; opacity: 0; }
 .intro.is-ready .intro__fio { animation: fade-in .9s 2.4s ease forwards; }
 .intro.is-opening .intro__fio, .intro.is-skipping .intro__fio { opacity: 0 !important; animation: none; transition: opacity .3s ease; }
 
 /* título no alto: XV e o nome */
 .intro__title {
-  position: absolute; left: 0; right: 0; top: calc(var(--bh) * .56 + var(--safe-t)); z-index: 3;
+  position: absolute; left: 0; right: 0; top: calc(15vh + var(--safe-t)); z-index: 3;
   display: flex; flex-direction: column; align-items: center; gap: 2px;
   text-align: center; pointer-events: none; opacity: 0;
 }
@@ -999,3 +999,33 @@ body.has-sheet { overflow: hidden; }
   .glint, .intro__flash, .chuva { display: none !important; }
   .js .letras-on .ch { opacity: 1; animation: none !important; }
 }
+
+
+/* ---------- 15. MOLDURA DE PRATA DA ABERTURA ----------------------------- */
+/* filete duplo em volta da tela com o ornamento de prata no meio, em cima e embaixo */
+.pf { position: absolute; z-index: 2; pointer-events: none; opacity: 0;
+      inset: calc(14px + var(--safe-t)) 14px calc(14px + var(--safe-b)); max-width: 560px; margin: 0 auto; }
+.pf__linha, .pf::after { position: absolute; border-radius: 18px; }
+.pf__linha {
+  inset: 0; padding: 1.2px;
+  background: linear-gradient(180deg, #e9eef5, #8a96aa 30%, #dfe5ee 55%, #7f8ba0 80%, #e3e8ef);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: .75;
+}
+.pf::after { content: ""; inset: 7px; border: 1px solid rgba(197, 206, 219, .22); border-radius: 13px; }
+.pf__orn { position: absolute; left: 50%; width: 150px; height: auto; transform: translate(-50%, -50%);
+           filter: drop-shadow(0 0 6px rgba(4, 10, 28, .9)) drop-shadow(0 0 2px rgba(4, 10, 28, 1)); }
+.pf__orn--top { top: 0; }
+.pf__orn--bot { top: 100%; }
+.intro.is-ready .pf { animation: pf-in 1.6s .3s var(--ease) forwards; }
+@keyframes pf-in { from { opacity: 0; transform: scale(1.03); } to { opacity: 1; transform: none; } }
+.intro.is-opening .pf, .intro.is-skipping .pf { transition: opacity .8s ease .4s; opacity: 0; animation: none; }
+.intro .pf .glint { z-index: 1; }
+.intro.is-ready .intro__fio { animation: fade-in .9s 2.4s ease forwards; }
+
+/* fim da página */
+.footer .footer__fim { max-width: 300px; margin: 18px auto 0; }
+
+@media (max-height: 520px) { .pf__orn { width: 110px; } }
+@media (prefers-reduced-motion: reduce) { .intro .pf { opacity: 1; } }

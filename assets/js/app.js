@@ -819,7 +819,7 @@ const CONFIG = {
 
     return {
       /** depois da abertura: as florzinhas somem e fica só a poeira prateada */
-      abrir() { aberto = true; if (reduceMotion) { flores = []; desenhar(0); } },
+      abrir() { flores = flores.slice(0, fraco ? 2 : 4); if (reduceMotion) desenhar(0); },   // depois de abrir: poucas pétalas, devagar
       chuva,
     };
   })();

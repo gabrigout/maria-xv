@@ -142,9 +142,12 @@
   <section id="intro" class="intro" aria-label="Convite fechado">
     <div class="intro__veil" aria-hidden="true"></div>
     <div class="intro__beam" aria-hidden="true"></div>
-    <div class="ff" aria-hidden="true">
-      <img class="ff__top" src="assets/img/flores/faixa-cima.webp" alt="" width="960" height="422" decoding="async" fetchpriority="high">
-      <img class="ff__bot" src="assets/img/flores/faixa-baixo.webp" alt="" width="960" height="422" decoding="async">
+    <div class="pf" aria-hidden="true">
+      <span class="pf__linha"></span>
+      <img class="pf__orn pf__orn--top" src="assets/img/ornamentos/divisor-prata-fino.webp" alt="" width="520" height="68" decoding="async">
+      <img class="pf__orn pf__orn--bot" src="assets/img/ornamentos/divisor-prata-fino.webp" alt="" width="520" height="68" decoding="async">
+      <span class="glint" style="--x:22px;--y:22px;--d:1.2s"></span>
+      <span class="glint" style="--x:calc(100% - 22px);--y:calc(100% - 22px);--d:3.8s"></span>
     </div>
     <div class="intro__glow" aria-hidden="true"></div>
     <div class="intro__flash" aria-hidden="true"></div>
@@ -152,7 +155,7 @@
     <p class="intro__title" aria-hidden="true">
       <span class="intro__xv" data-cfg="pessoa.xv" data-letras="900,220"></span>
       <span class="intro__name script" data-cfg="pessoa.nome" data-letras="1250,65"></span>
-      <svg class="intro__div" aria-hidden="true"><use href="#ornament-divider"/></svg>
+      <span class="footer__rule intro__rule" aria-hidden="true"><img src="assets/img/ornamentos/divisor-prata-fino.webp" alt="" width="520" height="68" decoding="async"></span>
     </p>
     <button class="intro__skip" id="skip" type="button" data-cfg="textos.pular"></button>
     <div class="intro__stage">
@@ -219,7 +222,7 @@
       </div>
 
       <p class="intro__hint" data-cfg="textos.abrir"></p>
-      <img class="intro__fio" src="assets/img/ornamentos/divisor-prata-fino.webp" alt="" width="520" height="68" decoding="async">
+      <div class="footer__rule intro__fio" aria-hidden="true"><img src="assets/img/ornamentos/divisor-prata-fino.webp" alt="" width="520" height="68" decoding="async"></div>
     </div>
   </section>
 
@@ -229,7 +232,7 @@
        ===================================================================== -->
   <main id="main" class="main" inert aria-hidden="true">
 
-    <!-- moldura floral: faixa de cima, faixa de baixo e vinhas que ligam as duas (cobre a página inteira) -->
+    <!-- flores só no topo, nos cantos -->
     <div class="ff" aria-hidden="true">
       <img class="ff__top" src="assets/img/flores/faixa-cima.webp" alt="" width="960" height="422" decoding="async">
     </div>
@@ -372,6 +375,7 @@
       <div class="footer__rule reveal reveal--line" aria-hidden="true"><img src="assets/img/ornamentos/divisor-prata-fino.webp" alt="" width="520" height="68" loading="lazy" decoding="async"></div>
       <p class="footer__line reveal" data-cfg="textos.rodape"></p>
       <p class="footer__name script reveal" data-cfg="pessoa.nome" data-letras="300,90"></p>
+      <div class="footer__rule footer__fim reveal reveal--line" aria-hidden="true"><img src="assets/img/ornamentos/divisor-prata-fino.webp" alt="" width="520" height="68" loading="lazy" decoding="async"></div>
     </footer>
   </main>
 
