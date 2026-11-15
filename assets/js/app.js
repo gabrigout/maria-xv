@@ -24,7 +24,7 @@ const CONFIG = {
   /* ----- Evento ----- */
   evento: {
     data: "2026-12-17",           // AAAA-MM-DD  (quinta-feira, 17 de dezembro de 2026)
-    hora: "21:00",                // HH:MM, formato 24h
+    hora: "22:00",                // HH:MM, formato 24h
     fusoHorario: "-03:00",        // Belém/PA = UTC-3 (sem horário de verão)
     duracaoHoras: 5,              // só para o arquivo de agenda (.ics) e o Google Agenda
     traje: "Esporte fino",
