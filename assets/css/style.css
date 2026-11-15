@@ -292,14 +292,6 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
   pointer-events: none;
 }
 
-/* arranjo de hortênsias preso no lacre */
-.env__bouquet {
-  position: absolute; left: 50%; top: 61.2245%; z-index: 6;
-  width: 66%; height: auto;
-  transform: translate(-50%, -52%);   /* o lacre cobre o miolo da coroa */
-  pointer-events: none;
-  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .45));
-}
 
 .intro__hint {
   margin-top: 30px;
@@ -314,8 +306,6 @@ img { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 /* --- toque: a abertura --- */
 .intro.is-opening .intro__hint, .intro.is-skipping .intro__hint { animation: none; opacity: 0; transition: opacity .3s ease; }
 
-.intro.is-opening .env__bouquet { animation: bouquet-fall .8s .05s cubic-bezier(.4, 0, .7, .4) forwards; }
-@keyframes bouquet-fall { to { transform: translate(-50%, -34%) rotate(-6deg) scale(.94); opacity: 0; } }
 
 .intro.is-opening .env__flap { animation: flap-open .85s .35s cubic-bezier(.45, .05, .25, 1) both, fade-out .55s 1.95s ease-in forwards; }
 @keyframes flap-open {
