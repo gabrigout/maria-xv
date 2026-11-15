@@ -73,6 +73,11 @@
       <linearGradient id="sat-sheen" x1="0" y1="0" x2="1" y2=".7">
         <stop offset=".18" stop-color="#9fb8f0" stop-opacity="0"/><stop offset=".34" stop-color="#9fb8f0" stop-opacity=".16"/><stop offset=".44" stop-color="#9fb8f0" stop-opacity="0"/>
       </linearGradient>
+      <!-- florzinha de hortênsia (4 pétalas), usada nos detalhes do envelope -->
+      <symbol id="floret" viewBox="-10 -10 20 20">
+        <path d="M0-1.2C1.8-4.6 5.4-4 4.6-1.2 4 .6 1.8 0 0-1.2ZM1.2 0C4.6 1.8 4 5.4 1.2 4.6-.6 4 0 1.8 1.2 0ZM0 1.2C-1.8 4.6-5.4 4-4.6 1.2-4-.6-1.8 0 0 1.2ZM-1.2 0C-4.6-1.8-4-5.4-1.2-4.6.6-4 0-1.8-1.2 0Z"/>
+        <circle r=".9"/>
+      </symbol>
     </defs>
 
     <!-- CANTO ORNAMENTAL da moldura (canto superior esquerdo; espelhado por CSS) -->
@@ -177,6 +182,18 @@
             <path d="M0 0H400L200 180Z" fill="url(#sat-flap)"/>
             <path d="M0 0H400L200 180Z" fill="url(#sat-sheen)"/>
             <path d="M16 4L200 166L384 4" fill="none" stroke="url(#g-foil)" stroke-opacity=".55" stroke-width="1" vector-effect="non-scaling-stroke"/>
+            <!-- detalhes: filete pontilhado dos cantos de cima até o lacre, losangos e florzinhas nos cantos -->
+            <g class="env__deco">
+              <path d="M34 5L200 152L366 5" fill="none" stroke="#dfe5ee" stroke-opacity=".55" stroke-width="1.3" stroke-dasharray="0 5" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+              <path d="M10 8C26 9 34 15 40 24M390 8C374 9 366 15 360 24" fill="none" stroke="url(#g-foil)" stroke-opacity=".7" stroke-width="1" vector-effect="non-scaling-stroke"/>
+              <g fill="#e9eef5" fill-opacity=".85">
+                <path d="M200 0l3 4-3 4-3-4z"/>
+                <path d="M100 2l2.4 3-2.4 3-2.4-3zM300 2l2.4 3-2.4 3-2.4-3z"/>
+                <circle cx="117" cy="80" r="1.6"/><circle cx="283" cy="80" r="1.6"/>
+              </g>
+              <use href="#floret" x="9" y="2" width="14" height="14" fill="#c5cedb" fill-opacity=".75"/>
+              <use href="#floret" x="377" y="2" width="14" height="14" fill="#c5cedb" fill-opacity=".75"/>
+            </g>
             <path d="M0 0H400L200 180Z" fill="none" stroke="url(#g-foil)" stroke-opacity=".8" stroke-width="1.3" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
           </svg>
           <svg class="flap__face flap__face--in" viewBox="0 0 400 180" focusable="false">
@@ -205,6 +222,17 @@
           <path d="M0 0L200 152L0 294M400 0L200 152L400 294" fill="none" stroke="#c5cedb" stroke-opacity=".12" stroke-width="1" vector-effect="non-scaling-stroke"/>
           <path d="M0 294L200 138L400 294" fill="none" stroke="url(#g-foil)" stroke-opacity=".5" stroke-width="1" vector-effect="non-scaling-stroke"/>
           <rect x=".75" y=".75" width="398.5" height="292.5" fill="none" stroke="url(#g-foil)" stroke-opacity=".55" stroke-width="1.2" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <!-- detalhes da frente: filetes dos cantos de baixo até o lacre (só aparecem com o envelope fechado) -->
+        <svg class="env__layer env__deco env__deco--front" viewBox="0 0 400 294" aria-hidden="true" focusable="false">
+          <path d="M18 284L170 168M382 284L230 168" fill="none" stroke="#dfe5ee" stroke-opacity=".5" stroke-width="1.3" stroke-dasharray="0 5" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <path d="M8 278L52 245M392 278L348 245" fill="none" stroke="url(#g-foil)" stroke-opacity=".7" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          <g fill="#e9eef5" fill-opacity=".85">
+            <path d="M96 222l3 3.5-3 3.5-3-3.5zM304 222l3 3.5-3 3.5-3-3.5z"/>
+            <path d="M200 286l3 4-3 4-3-4z"/>
+          </g>
+          <use href="#floret" x="5" y="278" width="14" height="14" fill="#c5cedb" fill-opacity=".75"/>
+          <use href="#floret" x="381" y="278" width="14" height="14" fill="#c5cedb" fill-opacity=".75"/>
         </svg>
         <span class="env__sheen" aria-hidden="true"></span>
 
